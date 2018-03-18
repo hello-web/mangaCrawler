@@ -1,22 +1,17 @@
-﻿using LiteDB;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Data
 {
-    abstract class Manga : IManga
+    abstract class Chapter : IChapter
     {
         public string Title { get; set; }
         public string ThumbLink { get; set; }
-        public string MangaLink { get; set; }
+        public string ChapterLink { get; set; }
+        public int ChapterNum { get; set; }
 
-        public abstract ICollection<IChapter> GetChapters();
+        public abstract ICollection<IPage> GetPages();
 
         public Image GetThumbnail()
         {
@@ -33,7 +28,8 @@ namespace MangaCrawler.Crawler.Data
                 });
 
                 return new Bitmap(230, 360);
-            } else
+            }
+            else
             {
                 return cache.GetImage();
             }

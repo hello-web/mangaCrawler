@@ -48,8 +48,17 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoManga : Manga
     {
-        public override string Title { get; set; }
-        public override string MangaLink { get; set; }
-        public override string ThumbLink { get; set; }
+        public override ICollection<IChapter> GetChapters()
+        {
+            return new List<IChapter>();
+        }
+    }
+
+    class MangaIndoChapter : Chapter
+    {
+        public override ICollection<IPage> GetPages()
+        {
+            return new List<IPage>();
+        }
     }
 }
