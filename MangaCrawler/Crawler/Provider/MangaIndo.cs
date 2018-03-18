@@ -1,4 +1,5 @@
 ﻿using AngleSharp.Dom.Html;
+using MangaCrawler.Crawler.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace MangaCrawler.Crawler.Provider
     {
         private string homeurl = "https://mangaindo.net/";
 
-        public async Task GetList()
+        public async Task<List<IManga>> GetList()
         {
             var crawler = new DomCrawler();
-            var lstResult = new List<MangaIndoManga>();
+            var lstResult = new List<IManga>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, homeurl);
             await crawler.LoadHtmlAsync(stream);
 
@@ -32,7 +33,7 @@ namespace MangaCrawler.Crawler.Provider
                 {
                     var manga = new MangaIndoManga()
                     {
-                        Link = link.Href,
+                        MangaLink = link.Href,
                         ThumbLink = thumb.Source,
                         Title = link.InnerHtml
                     };
@@ -41,14 +42,14 @@ namespace MangaCrawler.Crawler.Provider
                 }
             }
 
-            return;
+            return lstResult;
         }
     }
 
-    class MangaIndoManga
+    class MangaIndoManga : Manga
     {
-        public string Title { get; set; }
-        public string Link { get; set; }
-        public string ThumbLink { get; set; }
+        public override string Title { get; set; }
+        public override string MangaLink { get; set; }
+        public override string ThumbLink { get; set; }
     }
 }

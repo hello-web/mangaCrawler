@@ -27,7 +27,7 @@ namespace MangaCrawler
             Task.Run(async () =>
             {
                 var c = new MangaIndo();
-                await c.GetList();
+                var lst = await c.GetList();
             });
         }
 
