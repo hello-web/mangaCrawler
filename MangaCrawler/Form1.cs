@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MangaCrawler.Crawler.Provider;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,32 +26,11 @@ namespace MangaCrawler
         {
             Task.Run(async () =>
             {
-                string a = await Download(textBox1.Text);
-                Change b = delegate ()
-                {
-                    textBox2.Text = a;
-                };
-
-                Invoke(b);
+                var c = new MangaIndo();
+                await c.GetList();
             });
         }
 
-        private async Task<string> Download(string address)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                Uri requestUri = new Uri(address);
-                HttpRequestMessage httpRequest = new HttpRequestMessage(HttpMethod.Get, requestUri);
-                HttpResponseMessage httpResponse = await client.SendAsync(httpRequest);
-                
-                if (httpResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    HttpContent content = httpResponse.Content;
-                    return await content.ReadAsStringAsync();
-                }
-
-                return null;
-            }
-        }
+        
     }
 }

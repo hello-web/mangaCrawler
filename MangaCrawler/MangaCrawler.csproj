@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawler\DomCrawler.cs" />
+    <Compile Include="Crawler\HttpDownloader.cs" />
+    <Compile Include="Crawler\Provider\MangaIndo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
