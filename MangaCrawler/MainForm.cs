@@ -17,7 +17,8 @@ namespace MangaCrawler
 {
     public partial class MainForm : Form
     {
-        private delegate void Change(List<IManga> lst);
+        private List<IManga> lstManga = new List<IManga>();
+        private delegate void Change();
 
         public MainForm()
         {
@@ -28,14 +29,14 @@ namespace MangaCrawler
         {
             Task.Run(async () =>
             {
-                var c = new MangaIndo();
-                var lst = await c.GetList();
+                var provider = new MangaIndo();
+                lstManga = await provider.GetList();
 
-                Invoke(new Change(ChangeList), lst);
+                Invoke(new Change(ChangeList));
             });
         }
 
-        private void ChangeList(List<IManga> lstManga)
+        private void ChangeList()
         {
             listView1.Items.Clear();
             imageList1.Images.Clear();
@@ -60,6 +61,19 @@ namespace MangaCrawler
         private void Form1_Load(object sender, EventArgs e)
         {
             JobScheduler.Start();
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count > 0)
+            {
+                //double click to see detail;
+                var idx = listView1.SelectedItems[0].Index;
+                var manga = lstManga[idx];
+                var detailDialog = new DetailManga(manga);
+
+                detailDialog.Show();
+            }
         }
     }
 }

@@ -26,8 +26,8 @@ namespace MangaCrawler.Crawler.Provider
             {
                 crawler.LoadHtml(elm.InnerHtml);
 
-                IHtmlImageElement thumb = (IHtmlImageElement)crawler.QuerySingle("div.thumb img");
-                IHtmlAnchorElement link = (IHtmlAnchorElement)crawler.QuerySingle("div.title > a");
+                var thumb = (IHtmlImageElement)crawler.QuerySingle("div.thumb img");
+                var link = (IHtmlAnchorElement)crawler.QuerySingle("div.title > a");
 
                 if (thumb != null && link != null)
                 {
@@ -48,13 +48,46 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoManga : Manga
     {
-        public override ICollection<IChapter> GetChapters()
+        public async override Task<ICollection<IChapter>> GetChapters()
         {
-            return new List<IChapter>();
+            var crawler = new DomCrawler();
+            var lstResult = new List<IChapter>();
+            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, MangaLink);
+            await crawler.LoadHtmlAsync(stream);
+
+            var elements = crawler.Query("div.cl > ul > li");
+
+            foreach (var elm in elements)
+            {
+                crawler.LoadHtml(elm.InnerHtml);
+
+                var link = (IHtmlAnchorElement)crawler.QuerySingle("span.leftoff > a");
+
+                if (link != null)
+                {
+                    var chapter = new MangaIndoChapter()
+                    {
+                        ChapterLink = link.Href,
+                        Title = link.InnerHtml,
+                        ChapterNum = 0,
+                    };
+
+                    lstResult.Add(chapter);
+                }
+            }
+
+            //TODO:Need rearrange chapter here
+
+            return lstResult;
         }
 
-        public override IDictionary<string, object> GetMetas()
+        public async override Task<IDictionary<string, object>> GetMetas()
         {
+            var crawler = new DomCrawler();
+            var lstResult = new Dictionary<string, object>();
+            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, MangaLink);
+            await crawler.LoadHtmlAsync(stream);
+
             return new Dictionary<string, object>();
         }
     }

@@ -16,8 +16,8 @@ namespace MangaCrawler.Crawler.Data
         public string ThumbLink { get; set; }
         public string MangaLink { get; set; }
 
-        public abstract ICollection<IChapter> GetChapters();
-        public abstract IDictionary<string, object> GetMetas();
+        public abstract Task<ICollection<IChapter>> GetChapters();
+        public abstract Task<IDictionary<string, object>> GetMetas();
 
         public Image GetThumbnail()
         {
