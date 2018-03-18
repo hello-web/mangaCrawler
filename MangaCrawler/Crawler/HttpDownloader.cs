@@ -13,23 +13,32 @@ namespace MangaCrawler.Crawler
     {
         public static async Task<string> GetStringAsync(HttpMethod method, string address)
         {
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage httpResponse = await GetResponseAsync(method, address);
+
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
             {
-                Uri requestUri = new Uri(address);
-                HttpRequestMessage httpRequest = new HttpRequestMessage(method, requestUri);
-                HttpResponseMessage httpResponse = await client.SendAsync(httpRequest);
-
-                if (httpResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    HttpContent content = httpResponse.Content;
-                    return await content.ReadAsStringAsync();
-                }
-
-                return null;
+                HttpContent content = httpResponse.Content;
+                return await content.ReadAsStringAsync();
             }
+
+            return null;
         }
 
         public static async Task<Stream> GetAsync(HttpMethod method, string address)
+        {
+            HttpResponseMessage httpResponse = await GetResponseAsync(method, address);
+
+            if (httpResponse.StatusCode == HttpStatusCode.OK)
+            {
+                HttpContent content = httpResponse.Content;
+
+                return await content.ReadAsStreamAsync();
+            }
+
+            return null;
+        }
+
+        public static async Task<HttpResponseMessage> GetResponseAsync(HttpMethod method, string address)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -37,14 +46,7 @@ namespace MangaCrawler.Crawler
                 HttpRequestMessage httpRequest = new HttpRequestMessage(method, requestUri);
                 HttpResponseMessage httpResponse = await client.SendAsync(httpRequest);
 
-                if (httpResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    HttpContent content = httpResponse.Content;
-
-                    return await content.ReadAsStreamAsync();
-                }
-
-                return null;
+                return httpResponse;
             }
         }
     }
