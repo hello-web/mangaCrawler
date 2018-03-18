@@ -52,6 +52,11 @@ namespace MangaCrawler.Crawler.Provider
         {
             return new List<IChapter>();
         }
+
+        public override IDictionary<string, object> GetMetas()
+        {
+            return new Dictionary<string, object>();
+        }
     }
 
     class MangaIndoChapter : Chapter

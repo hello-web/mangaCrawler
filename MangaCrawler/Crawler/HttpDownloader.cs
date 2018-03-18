@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler
 {
-    class HttpDownloader
+    static class HttpDownloader
     {
         public static async Task<string> GetStringAsync(HttpMethod method, string address)
         {

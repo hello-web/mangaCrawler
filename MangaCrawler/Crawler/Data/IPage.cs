@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Data
 {
-    interface IPage
+    public interface IPage
     {
         string PageLink { get; set; }
         int PageNum { get; set; }

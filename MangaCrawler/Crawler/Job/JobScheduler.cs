@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Job
 {
-    class JobScheduler
+    static class JobScheduler
     {
         static Queue<JobDescription> queueJob = new Queue<JobDescription>();
         static Thread[] threads = new Thread[4];

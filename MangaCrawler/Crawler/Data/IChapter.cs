@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Data
 {
-    interface IChapter
+    public interface IChapter
     {
         string Title { get; set; }
         string ThumbLink { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Data
 {
-    interface IManga
+    public interface IManga
     {
         string Title { get; set; }
         string ThumbLink { get; set; }
@@ -15,5 +15,6 @@ namespace MangaCrawler.Crawler.Data
 
         Image GetThumbnail();
         ICollection<IChapter> GetChapters();
+        IDictionary<string, object> GetMetas();
     }
 }

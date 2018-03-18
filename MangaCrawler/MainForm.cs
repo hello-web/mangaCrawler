@@ -15,11 +15,11 @@ using System.Windows.Forms;
 
 namespace MangaCrawler
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private delegate void Change(List<IManga> lst);
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
