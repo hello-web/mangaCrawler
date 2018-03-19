@@ -74,7 +74,9 @@
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5});
+            this.listView2.FullRowSelect = true;
             this.listView2.Location = new System.Drawing.Point(201, 12);
+            this.listView2.MultiSelect = false;
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(587, 426);
             this.listView2.TabIndex = 3;

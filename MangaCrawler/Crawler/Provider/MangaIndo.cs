@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom.Html;
 using MangaCrawler.Crawler.Data;
+using MangaCrawler.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,7 @@ namespace MangaCrawler.Crawler.Provider
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, MangaLink);
+            var counter = 1;
             await crawler.LoadHtmlAsync(stream);
 
             var elements = crawler.Query("div.cl > ul > li");
@@ -77,7 +79,14 @@ namespace MangaCrawler.Crawler.Provider
             }
 
             //TODO:Need rearrange chapter here
+            lstResult = lstResult.OrderBy(x => x.Title, new NaturalComparer()).ToList();
 
+            foreach (var elm in lstResult)
+            {
+                elm.ChapterNum = counter;
+                counter++;
+            }
+            
             return lstResult;
         }
 
