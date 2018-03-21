@@ -40,7 +40,7 @@ namespace MangaCrawler
             foreach (var chapter in lstChapter)
             {
                 var item = new ListViewItem(chapter.ChapterNum.ToString());
-                item.SubItems.Add("");
+                item.SubItems.Add(chapter.GetPages().Count.ToString());
                 item.SubItems.Add(chapter.Title);
 
                 listView2.Items.Add(item);
@@ -50,6 +50,14 @@ namespace MangaCrawler
         private void DetailManga_Load(object sender, EventArgs e)
         {
             //
+        }
+
+        private void listView2_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView2.SelectedItems.Count > 0)
+            {
+                //Download and read it.
+            }
         }
     }
 }

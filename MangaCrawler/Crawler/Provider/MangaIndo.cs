@@ -77,8 +77,7 @@ namespace MangaCrawler.Crawler.Provider
                     lstResult.Add(chapter);
                 }
             }
-
-            //TODO:Need rearrange chapter here
+            
             lstResult = lstResult.OrderBy(x => x.Title, new NaturalComparer()).ToList();
 
             foreach (var elm in lstResult)
@@ -103,9 +102,24 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoChapter : Chapter
     {
+        private List<IPage> Pages = null;
+
         public override ICollection<IPage> GetPages()
         {
-            return new List<IPage>();
+            if (Pages == null)
+            {
+                //start crawling web
+            }
+
+            return Pages;
+        }
+    }
+
+    class MangaIndoPage : Page
+    {
+        public override bool DownloadPage(string filename)
+        {
+            return true;
         }
     }
 }

@@ -54,6 +54,7 @@
             this.columnHeader1,
             this.columnHeader2});
             this.listView1.Location = new System.Drawing.Point(12, 278);
+            this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(183, 160);
             this.listView1.TabIndex = 2;
@@ -82,6 +83,7 @@
             this.listView2.TabIndex = 3;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
+            this.listView2.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView2_MouseDoubleClick);
             // 
             // columnHeader3
             // 

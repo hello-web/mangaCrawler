@@ -74,6 +74,7 @@
     <Compile Include="Crawler\Data\IManga.cs" />
     <Compile Include="Crawler\Data\IPage.cs" />
     <Compile Include="Crawler\Data\Manga.cs" />
+    <Compile Include="Crawler\Data\Page.cs" />
     <Compile Include="Crawler\DomCrawler.cs" />
     <Compile Include="Crawler\HttpDownloader.cs" />
     <Compile Include="Crawler\Provider\MangaIndo.cs" />
