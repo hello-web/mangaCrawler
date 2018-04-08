@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Data
 {
@@ -10,8 +11,9 @@ namespace MangaCrawler.Crawler.Data
         public string ThumbLink { get; set; }
         public string ChapterLink { get; set; }
         public int ChapterNum { get; set; }
+        public ICollection<IPage> Pages { get; set; }
 
-        public abstract ICollection<IPage> GetPages();
+        public abstract Task<ICollection<IPage>> GetPages();
 
         public Image GetThumbnail()
         {
@@ -52,5 +54,6 @@ namespace MangaCrawler.Crawler.Data
                 });
             }
         }
+        
     }
 }

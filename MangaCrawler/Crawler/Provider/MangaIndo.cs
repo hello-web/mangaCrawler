@@ -102,13 +102,29 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoChapter : Chapter
     {
-        private List<IPage> Pages = null;
-
-        public override ICollection<IPage> GetPages()
+        public override async Task<ICollection<IPage>> GetPages()
         {
             if (Pages == null)
             {
                 //start crawling web
+                var counter = 1;
+                var crawler = new DomCrawler();
+                var stream = await HttpDownloader.GetAsync(HttpMethod.Get, ChapterLink);
+
+                await crawler.LoadHtmlAsync(stream);
+
+                var elements = crawler.Query("#readerarea img");
+
+                Pages = new List<IPage>();
+
+                foreach (IHtmlImageElement element in elements)
+                {
+                    Pages.Add(new MangaIndoPage()
+                    {
+                        PageNum = ++counter,
+                        PageLink = element.Source,
+                    });
+                }
             }
 
             return Pages;

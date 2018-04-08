@@ -29,6 +29,11 @@ namespace MangaCrawler
                 lstChapter = await manga.GetChapters();
                 lstMeta = await manga.GetMetas();
 
+                foreach (var chapter in lstChapter)
+                {
+                    await chapter.GetPages();
+                }
+
                 Invoke(new Change(ChangeList));
             });
         }
@@ -40,7 +45,7 @@ namespace MangaCrawler
             foreach (var chapter in lstChapter)
             {
                 var item = new ListViewItem(chapter.ChapterNum.ToString());
-                item.SubItems.Add(chapter.GetPages().Count.ToString());
+                item.SubItems.Add(chapter.Pages.Count.ToString());
                 item.SubItems.Add(chapter.Title);
 
                 listView2.Items.Add(item);

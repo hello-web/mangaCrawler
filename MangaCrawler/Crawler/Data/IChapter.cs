@@ -13,8 +13,9 @@ namespace MangaCrawler.Crawler.Data
         string ThumbLink { get; set; }
         string ChapterLink { get; set; }
         int ChapterNum { get; set; }
+        ICollection<IPage> Pages { get; set; }
 
         Image GetThumbnail();
-        ICollection<IPage> GetPages();
+        Task<ICollection<IPage>> GetPages();
     }
 }
