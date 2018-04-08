@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using MangaCrawler.Crawler.Data;
+using MangaCrawler.Crawler.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,7 @@ namespace MangaCrawler
         static void Main()
         {
             PrepareApp();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
