@@ -10,10 +10,11 @@ namespace MangaCrawler.Crawler.Data
 {
     public interface IChapter
     {
+        ulong Id { get; set; }
         string Title { get; set; }
         string ThumbLink { get; set; }
         string Url { get; set; }
-        int ChapterNum { get; set; }
+        uint ChapterNum { get; set; }
         ICollection<IPage> Pages { get; set; }
 
         Image GetThumbnail();
@@ -22,10 +23,11 @@ namespace MangaCrawler.Crawler.Data
 
     abstract class Chapter : IChapter
     {
+        public ulong Id { get; set; }
         public string Title { get; set; }
         public string ThumbLink { get; set; }
         public string Url { get; set; }
-        public int ChapterNum { get; set; }
+        public uint ChapterNum { get; set; }
         public ICollection<IPage> Pages { get; set; }
 
         public abstract Task<ICollection<IPage>> GetPages();

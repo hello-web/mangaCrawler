@@ -18,6 +18,7 @@ namespace MangaCrawler.Crawler.Database
         public uint IdProvider { get; set; }
         public string Title { get; set; }
         public string Url { get; set; }
+        public string ThumbUrl { get; set; }
         public string Thumb { get; set; }
         public DateTime? UpdateAt { get; set; }
         public DateTime? CreateAt { get; set; }
@@ -30,7 +31,8 @@ namespace MangaCrawler.Crawler.Database
                 UpdateAt = DateTime.Now,
                 IdProvider = 1,
                 Title = manga.Title,
-                Url = manga.MangaLink,
+                Url = manga.Url,
+                ThumbUrl = manga.ThumbLink,
             };
 
             using (var conn = new Connector().GetConnection())

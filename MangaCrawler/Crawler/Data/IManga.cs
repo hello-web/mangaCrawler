@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace MangaCrawler.Crawler.Data
 {
     public interface IManga
     {
+        ulong Id { get; set; }
         string Title { get; set; }
         string ThumbLink { get; set; }
         string Url { get; set; }
@@ -20,6 +22,7 @@ namespace MangaCrawler.Crawler.Data
 
     abstract class Manga : IManga
     {
+        public ulong Id { get; set; }
         public string Title { get; set; }
         public string ThumbLink { get; set; }
         public string Url { get; set; }
@@ -57,7 +60,6 @@ namespace MangaCrawler.Crawler.Data
                 var ext = Path.GetExtension(ThumbLink);
                 var newName = filename + ext;
 
-                File.Move(filename, newName);
 
                 coll.Insert(new CacheImg()
                 {

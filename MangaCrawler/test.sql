@@ -37,6 +37,7 @@ CREATE TABLE `chapter` (
   `Url` varchar(500) NOT NULL,
   `Num` int(10) unsigned NOT NULL DEFAULT '0',
   `Thumb` varchar(100) DEFAULT NULL,
+  `ThumbUrl` varchar(500) DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,
   `Updateat` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`Id`)
@@ -65,6 +66,7 @@ CREATE TABLE `manga` (
   `Title` varchar(200) NOT NULL,
   `Url` varchar(500) NOT NULL,
   `Thumb` varchar(100) DEFAULT NULL,
+  `ThumbUrl` varchar(500) DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,
   `UpdateAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`Id`)
@@ -93,6 +95,7 @@ CREATE TABLE `page` (
   `IdChapter` bigint(20) unsigned NOT NULL,
   `Num` int(10) unsigned DEFAULT NULL,
   `Url` varchar(500) NOT NULL,
+  `Path` varchar(100) DEFAULT NULL,
   `IsDownload` tinyint(1) NOT NULL DEFAULT '0',
   `UpdateAt` timestamp NULL DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,

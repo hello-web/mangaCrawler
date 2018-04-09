@@ -30,7 +30,8 @@ namespace MangaCrawler
             Task.Run(async () =>
             {
                 var provider = new MangaIndo();
-                lstManga = await provider.GetList();
+                var tmpManga = await provider.GetList();
+                lstManga = tmpManga.ToList();
 
                 Invoke(new Change(ChangeList));
             });
@@ -51,7 +52,7 @@ namespace MangaCrawler
 
                 item.ImageIndex = counter;
                 item.Text = manga.Title;
-                item.SubItems.Add(manga.MangaLink);
+                item.SubItems.Add(manga.Url);
 
                 listView1.Items.Add(item);
                 counter++;
