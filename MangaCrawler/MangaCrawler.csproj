@@ -85,7 +85,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crawler\Database\Chapter.cs" />
     <Compile Include="Crawler\Database\Connector.cs" />
+    <Compile Include="Crawler\Database\Manga.cs" />
+    <Compile Include="Crawler\Database\Page.cs" />
+    <Compile Include="Crawler\Database\Provider.cs" />
     <Compile Include="Crawler\Data\CacheImg.cs" />
     <Compile Include="Crawler\Data\Chapter.cs" />
     <Compile Include="Crawler\Data\IChapter.cs" />

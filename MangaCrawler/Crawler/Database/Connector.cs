@@ -13,6 +13,7 @@ namespace MangaCrawler.Crawler.Database
         private const string SQL_Password = "qweqwe";
         private const string SQL_Host = "localhost";
         private const string SQL_Database = "crawler";
+        private const int SQL_Port = 3600;
         
         public MySqlConnection GetConnection()
         {
@@ -22,6 +23,8 @@ namespace MangaCrawler.Crawler.Database
             connBuilder.UserID = SQL_User;
             connBuilder.Password = SQL_Password;
             connBuilder.Database = SQL_Database;
+            connBuilder.Port = SQL_Port;
+            connBuilder.Pooling = true;
 
             return new MySqlConnection(connBuilder.GetConnectionString(true));
         }
