@@ -38,6 +38,9 @@
     <Reference Include="Dapper, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dapper.1.50.4\lib\net451\Dapper.dll</HintPath>
     </Reference>
+    <Reference Include="Dapper.Contrib, Version=1.50.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.Contrib.1.50.4\lib\net451\Dapper.Contrib.dll</HintPath>
+    </Reference>
     <Reference Include="LiteDB, Version=4.1.2.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.2\lib\net40\LiteDB.dll</HintPath>
     </Reference>
@@ -53,6 +56,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.Management" />
     <Reference Include="System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -91,12 +95,10 @@
     <Compile Include="Crawler\Database\Page.cs" />
     <Compile Include="Crawler\Database\Provider.cs" />
     <Compile Include="Crawler\Data\CacheImg.cs" />
-    <Compile Include="Crawler\Data\Chapter.cs" />
     <Compile Include="Crawler\Data\IChapter.cs" />
     <Compile Include="Crawler\Data\IManga.cs" />
     <Compile Include="Crawler\Data\IPage.cs" />
-    <Compile Include="Crawler\Data\Manga.cs" />
-    <Compile Include="Crawler\Data\Page.cs" />
+    <Compile Include="Crawler\Data\IProvider.cs" />
     <Compile Include="Crawler\DomCrawler.cs" />
     <Compile Include="Crawler\HttpDownloader.cs" />
     <Compile Include="Crawler\Provider\MangaIndo.cs" />
