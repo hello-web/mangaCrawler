@@ -10,7 +10,7 @@ namespace MangaCrawler.Crawler.Database
     {
         public ulong Id { get; set; }
         public ulong IdChapter { get; set; }
-        public uint Order { get; set; }
+        public uint Num { get; set; }
         public string Url { get; set; }
         public bool IsDownloaded { get; set; }
         public DateTime? UpdateAt { get; set; }
