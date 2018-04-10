@@ -13,7 +13,7 @@ namespace MangaCrawler.Crawler.Data
         string Url { get; set; }
         bool IsEnabled { get; set; }
 
-        Task<ICollection<IManga>> GetList();
+        Task<IEnumerable<IManga>> GetList();
         void Save();
     }
 }

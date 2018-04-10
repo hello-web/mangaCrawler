@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Database
 {
-    class Connector
+    static class Connector
     {
         private const string SQL_User = "mes";
         private const string SQL_Password = "qweqwe";
@@ -15,7 +15,7 @@ namespace MangaCrawler.Crawler.Database
         private const string SQL_Database = "crawler";
         private const int SQL_Port = 3600;
         
-        public MySqlConnection GetConnection()
+        public static MySqlConnection GetConnection()
         {
             var connBuilder = new MySqlConnectionStringBuilder();
 

@@ -1,4 +1,5 @@
 ﻿using MangaCrawler.Crawler.Data;
+using MangaCrawler.Crawler.Database;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,9 +13,8 @@ namespace MangaCrawler.Crawler.Job
     class JobDescription
     {
         public string UrlDownload { get; set; }
-
-        public Action<string, bool> AfterDownload { get; set; }
-
+        public IUpdateThumb Entity { get; set; }
+        
         public async void Download()
         {
             var tmpName = Guid.NewGuid().ToString();
@@ -30,18 +30,19 @@ namespace MangaCrawler.Crawler.Job
                     {
                         await download.Content.CopyToAsync(fs);
                         await fs.FlushAsync();
-                        fs.Close();
                     }
 
-                    AfterDownload?.Invoke(tmpPath, true);
-                } else
-                {
-                    AfterDownload?.Invoke(null, false);
+                    UpdateDatabase(tmpName);
+                    return;
                 }
-            } catch
-            {
-                AfterDownload?.Invoke(null, false);
-            }
+            } catch { }
+
+            UpdateDatabase("");
+        }
+
+        public void UpdateDatabase(string filename)
+        {
+            Entity.SetThumbnail(filename);
         }
     }
 }

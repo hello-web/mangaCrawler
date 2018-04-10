@@ -19,9 +19,9 @@ namespace MangaCrawler.Crawler.Data
         DateTime? UpdateAt { get; set; }
         DateTime? CreateAt { get; set; }
 
-        void Save();
+        bool Save();
         Image GetThumbnail();
-        Task<ICollection<IChapter>> GetChapters();
+        Task<IEnumerable<IChapter>> GetChapters();
         Task<IDictionary<string, object>> GetMetas();
     }
 }

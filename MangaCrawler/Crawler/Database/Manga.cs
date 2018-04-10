@@ -12,10 +12,9 @@ using System.IO;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("manga")]
-    abstract class Manga : IManga
+    abstract class Manga : IManga, IUpdateThumb
     {
         [Key]
-        [Computed]
         public ulong Id { get; set; }
         public uint IdProvider { get; set; }
         public string Title { get; set; }
@@ -25,54 +24,50 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? UpdateAt { get; set; }
         public DateTime? CreateAt { get; set; }
 
-        public void Save()
+        public bool Save()
         {
             if (!CreateAt.HasValue) CreateAt = DateTime.Now;
             UpdateAt = DateTime.Now;
 
-            using (var conn = new Connector().GetConnection())
+            using (var conn = Connector.GetConnection())
             {
-                conn.Insert(this);
+                try
+                {
+                    conn.Insert(this);
+                    return true;
+                } catch
+                {
+                    return false;
+                }
             }
         }
-        public abstract Task<ICollection<IChapter>> GetChapters();
+        public abstract Task<IEnumerable<IChapter>> GetChapters();
         public abstract Task<IDictionary<string, object>> GetMetas();
+        public async void SetThumbnail(string filename)
+        {
+            Thumb = filename;
+            UpdateAt = DateTime.Now;
+
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    await conn.UpdateAsync(this);
+                } catch { }
+            }
+        } 
         public Image GetThumbnail()
         {
-            var coll = Cache.GetCollectionCache();
-            var cache = coll.FindOne(x => x.UrlImage == ThumbUrl);
-
-            if (cache == null)
-            {
-                //Schedule for Download Image
-                Job.JobScheduler.PushJob(new Job.JobDescription()
-                {
-                    AfterDownload = AfterDownload,
-                    UrlDownload = ThumbUrl,
-                });
-
+            if (string.IsNullOrEmpty(Thumb))
                 return new Bitmap(230, 360);
-            }
-            else
-            {
-                return cache.GetImage();
-            }
+
+            return GetImage();
         }
-        private void AfterDownload(string filename, bool is_success)
+        private Image GetImage()
         {
-            if (is_success)
-            {
-                var coll = Cache.GetCollectionCache();
-                var ext = Path.GetExtension(ThumbUrl);
-                var newName = filename + ext;
+            var path = Path.Combine(Program.CachePath, Thumb);
 
-
-                coll.Insert(new CacheImg()
-                {
-                    UrlImage = ThumbUrl,
-                    NameImage = newName,
-                });
-            }
+            return Image.FromFile(path);
         }
     }
 }

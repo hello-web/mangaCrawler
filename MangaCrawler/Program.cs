@@ -1,6 +1,7 @@
 ﻿using LiteDB;
 using MangaCrawler.Crawler.Data;
 using MangaCrawler.Crawler.Database;
+using MangaCrawler.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,8 +19,18 @@ namespace MangaCrawler
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                // There arguments here
+                if (args[0] == "--register")
+                    ProviderRegister.Register();
+
+                Application.Exit();
+                return;
+            }
+
             PrepareApp();
 
             Application.EnableVisualStyles();

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MangaCrawler.Crawler.Database;
+using Dapper;
+using Dapper.Contrib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,20 +28,45 @@ namespace MangaCrawler.Crawler.Job
 
         private static void Work(object state)
         {
-            for (int i = 0; i < threads.Length; i++)
+            CollectWork();
+
+            if (queueJob.Count > 0)
             {
-                var thread = threads[i];
-
-                if ((
-                    thread == null ||
-                    thread.ThreadState == ThreadState.Stopped ||
-                    thread.ThreadState == ThreadState.Aborted) && queueJob.Count > 0)
+                for (int i = 0; i < threads.Length; i++)
                 {
-                    var job = queueJob.Dequeue();
-                    var thStart = new ThreadStart(job.Download);
+                    var thread = threads[i];
 
-                    thread = new Thread(thStart);
-                    thread.Start();
+                    if (
+                        thread == null ||
+                        thread.ThreadState == ThreadState.Stopped ||
+                        thread.ThreadState == ThreadState.Aborted)
+                    {
+                        var job = queueJob.Dequeue();
+                        var thStart = new ThreadStart(job.Download);
+
+                        thread = new Thread(thStart);
+                        thread.Start();
+                    }
+                }
+            }
+        }
+
+        private static void CollectWork()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                var sql = "SELECT * FROM manga WHERE Thumb IS NULL";
+                var res = conn.Query<Manga>(sql);
+
+                foreach (var data in res)
+                {
+                    var job = new JobDescription()
+                    {
+                        UrlDownload = data.ThumbUrl,
+                        Entity = data
+                    };
+
+                    PushJob(job);
                 }
             }
         }

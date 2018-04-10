@@ -13,7 +13,7 @@ namespace MangaCrawler
 {
     public partial class DetailManga : Form
     {
-        ICollection<IChapter> lstChapter = new List<IChapter>();
+        IEnumerable<IChapter> lstChapter = new List<IChapter>();
         IDictionary<string, object> lstMeta = new Dictionary<string, object>();
 
         private delegate void Change();
@@ -44,7 +44,7 @@ namespace MangaCrawler
 
             foreach (var chapter in lstChapter)
             {
-                var item = new ListViewItem(chapter.ChapterNum.ToString());
+                var item = new ListViewItem(chapter.Num.ToString());
                 item.SubItems.Add(chapter.Pages.Count.ToString());
                 item.SubItems.Add(chapter.Title);
 

@@ -23,6 +23,6 @@ namespace MangaCrawler.Crawler.Data
 
         void Save();
         Image GetThumbnail();
-        Task<ICollection<IPage>> GetPages();
+        Task<IEnumerable<IPage>> GetPages();
     }
 }

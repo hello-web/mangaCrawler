@@ -99,6 +99,7 @@
     <Compile Include="Crawler\Data\IManga.cs" />
     <Compile Include="Crawler\Data\IPage.cs" />
     <Compile Include="Crawler\Data\IProvider.cs" />
+    <Compile Include="Crawler\Data\IUpdateThumb.cs" />
     <Compile Include="Crawler\DomCrawler.cs" />
     <Compile Include="Crawler\HttpDownloader.cs" />
     <Compile Include="Crawler\Provider\MangaIndo.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\NaturalComparer.cs" />
+    <Compile Include="Util\ProviderRegister.cs" />
     <EmbeddedResource Include="DetailManga.resx">
       <DependentUpon>DetailManga.cs</DependentUpon>
     </EmbeddedResource>

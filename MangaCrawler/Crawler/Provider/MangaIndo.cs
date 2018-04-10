@@ -2,11 +2,11 @@
 using MangaCrawler.Crawler.Data;
 using MangaCrawler.Crawler.Database;
 using MangaCrawler.Util;
+using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using AProvider = MangaCrawler.Crawler.Database.Provider;
 
@@ -14,13 +14,18 @@ namespace MangaCrawler.Crawler.Provider
 {
     class MangaIndo : AProvider
     {
-        private new string Name { get; set; } = "Manga Indo";
-        private new string Url { get; set; } = "https://mangaindo.net/";
+        public MangaIndo()
+        {
+            Name = "Manga Indo";
+            Url = "https://mangaindo.net/";
+            IsEnabled = true;
 
-        public override async Task<ICollection<IManga>> GetList()
+            GetId();
+        }
+
+        public override async Task<IEnumerable<IManga>> GetList()
         {
             var crawler = new DomCrawler();
-            var lstResult = new List<IManga>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
             await crawler.LoadHtmlAsync(stream);
 
@@ -35,24 +40,49 @@ namespace MangaCrawler.Crawler.Provider
 
                 if (thumb != null && link != null)
                 {
-                    var manga = new MangaIndoManga()
+                    try
                     {
-                        Url = link.Href,
-                        ThumbUrl = thumb.Source,
-                        Title = link.InnerHtml
-                    };
+                        var manga = new MangaIndoManga()
+                        {
+                            IdProvider = this.Id,
+                            Url = link.Href,
+                            ThumbUrl = thumb.Source,
+                            Title = link.InnerHtml
+                        };
 
-                    lstResult.Add(manga);
+                        manga.Save();
+                    } catch (Exception ex)
+                    {
+                        throw ex;
+                    }
                 }
             }
 
-            return lstResult;
+            return await GetFromDatabase();
+        }
+
+        private async Task<IEnumerable<IManga>> GetFromDatabase()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM manga WHERE IdProvider = @provider";
+                    var param = new { provider = this.Id };
+                    var query = await conn.QueryAsync<MangaIndoManga>(sql, param);
+
+                    return query;
+                } catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 
     class MangaIndoManga : Manga
     {
-        public async override Task<ICollection<IChapter>> GetChapters()
+        public async override Task<IEnumerable<IChapter>> GetChapters()
         {
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
@@ -72,6 +102,7 @@ namespace MangaCrawler.Crawler.Provider
                 {
                     var chapter = new MangaIndoChapter()
                     {
+                        IdManga = this.Id,
                         Url = link.Href,
                         Title = link.InnerHtml,
                         Num = 0,
@@ -105,7 +136,7 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoChapter : Chapter
     {
-        public override async Task<ICollection<IPage>> GetPages()
+        public override async Task<IEnumerable<IPage>> GetPages()
         {
             if (Pages == null)
             {
@@ -124,6 +155,7 @@ namespace MangaCrawler.Crawler.Provider
                 {
                     Pages.Add(new MangaIndoPage()
                     {
+                        IdChapter = this.Id,
                         Num = ++counter,
                         Url = element.Source,
                     });

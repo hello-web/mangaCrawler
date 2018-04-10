@@ -11,6 +11,7 @@ namespace MangaCrawler.Crawler.Database
     [Table("page")]
     abstract class Page : IPage
     {
+        [Key]
         public ulong Id { get; set; }
         public ulong IdChapter { get; set; }
         public uint Num { get; set; }
@@ -25,7 +26,7 @@ namespace MangaCrawler.Crawler.Database
         {
             UpdateAt = DateTime.Now;
 
-            using (var conn = new Connector().GetConnection())
+            using (var conn = Connector.GetConnection())
             {
                 conn.Insert(this);
             }

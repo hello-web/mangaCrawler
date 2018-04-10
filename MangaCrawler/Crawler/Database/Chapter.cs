@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("chapter")]
-    abstract class Chapter : IChapter
+    abstract class Chapter : IChapter, IUpdateThumb
     {
+        [Key]
         public ulong Id { get; set; }
         public ulong IdManga { get; set; }
         public string Title { get; set; }
@@ -24,57 +25,43 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? CreateAt { get; set; }
         public ICollection<IPage> Pages { get; set; }
 
-        public abstract Task<ICollection<IPage>> GetPages();
+        public abstract Task<IEnumerable<IPage>> GetPages();
 
         public void Save()
         {
             if (!CreateAt.HasValue) CreateAt = DateTime.Now;
             UpdateAt = DateTime.Now;
 
-            using (var conn = new Connector().GetConnection())
+            using (var conn = Connector.GetConnection())
             {
                 conn.Insert(this);
             }
         }
-
-        public Image GetThumbnail()
+        public async void SetThumbnail(string filename)
         {
-            var coll = Cache.GetCollectionCache();
-            var cache = coll.FindOne(x => x.UrlImage == ThumbUrl);
+            Thumb = filename;
+            UpdateAt = DateTime.Now;
 
-            if (cache == null)
+            using (var conn = Connector.GetConnection())
             {
-                //Schedule for Download Image
-                Job.JobScheduler.PushJob(new Job.JobDescription()
+                try
                 {
-                    AfterDownload = AfterDownload,
-                    UrlDownload = ThumbUrl,
-                });
-
-                return new Bitmap(230, 360);
-            }
-            else
-            {
-                return cache.GetImage();
+                    await conn.UpdateAsync(this);
+                } catch { }
             }
         }
-
-        private void AfterDownload(string filename, bool is_success)
+        public Image GetThumbnail()
         {
-            if (is_success)
-            {
-                var coll = Cache.GetCollectionCache();
-                var ext = Path.GetExtension(ThumbUrl);
-                var newName = filename + ext;
+            if (Thumb == null)
+                return new Bitmap(230, 360);
 
-                File.Move(filename, newName);
+            return GetImage();
+        }
+        private Image GetImage()
+        {
+            var path = Path.Combine(Program.CachePath, Thumb);
 
-                coll.Insert(new CacheImg()
-                {
-                    UrlImage = ThumbUrl,
-                    NameImage = newName,
-                });
-            }
+            return Image.FromFile(path);
         }
     }
 }
