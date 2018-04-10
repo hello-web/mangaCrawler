@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("page")]
-    abstract class Page : IPage
+    class Page : IPage
     {
         [Key]
         public ulong Id { get; set; }
@@ -21,7 +21,10 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? UpdateAt { get; set; }
         public DateTime? DownloadAt { get; set; }
 
-        public abstract Task<bool> DownloadPage(string filename);
+        public virtual Task<bool> DownloadPage(string filename)
+        {
+            return Task.Run(() => true);
+        }
         public void Save()
         {
             UpdateAt = DateTime.Now;

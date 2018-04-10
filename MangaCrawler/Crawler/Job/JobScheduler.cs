@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MangaCrawler.Crawler.Data;
 
 namespace MangaCrawler.Crawler.Job
 {
@@ -15,13 +16,13 @@ namespace MangaCrawler.Crawler.Job
         static Queue<JobDescription> queueJob = new Queue<JobDescription>();
         static Thread[] threads = new Thread[4];
         static Timer timer = new Timer(new TimerCallback(Work), null, Timeout.Infinite, 1000);
-        
+
         public static void Start()
         {
             timer.Change(0, 1000);
         }
 
-        public static void PushJob(JobDescription job)
+        private static void PushJob(JobDescription job)
         {
             queueJob.Enqueue(job);
         }
@@ -55,10 +56,23 @@ namespace MangaCrawler.Crawler.Job
         {
             using (var conn = Connector.GetConnection())
             {
-                var sql = "SELECT * FROM manga WHERE Thumb IS NULL";
-                var res = conn.Query<Manga>(sql);
+                var sqlm = "SELECT * FROM manga WHERE Thumb IS NULL";
+                var sqlc = "SELECT * FROM chapter WHERE Thumb IS NULL";
+                var resm = conn.Query<Manga>(sqlm);
+                var resc = conn.Query<Chapter>(sqlc);
 
-                foreach (var data in res)
+                foreach (var data in resm)
+                {
+                    var job = new JobDescription()
+                    {
+                        UrlDownload = data.ThumbUrl,
+                        Entity = data
+                    };
+
+                    PushJob(job);
+                }
+
+                foreach (var data in resc)
                 {
                     var job = new JobDescription()
                     {

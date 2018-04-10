@@ -12,7 +12,7 @@ using System.IO;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("manga")]
-    abstract class Manga : IManga, IUpdateThumb
+    class Manga : IManga, IUpdateThumb
     {
         [Key]
         public ulong Id { get; set; }
@@ -41,8 +41,14 @@ namespace MangaCrawler.Crawler.Database
                 }
             }
         }
-        public abstract Task<IEnumerable<IChapter>> GetChapters();
-        public abstract Task<IDictionary<string, object>> GetMetas();
+        public virtual Task<IEnumerable<IChapter>> GetChapters()
+        {
+            return Task.Run<IEnumerable<IChapter>>(() => new List<IChapter>());
+        }
+        public virtual Task<IDictionary<string, object>> GetMetas()
+        {
+            return Task.Run<IDictionary<string, object>>(() => new Dictionary<string, object>());
+        }
         public async void SetThumbnail(string filename)
         {
             Thumb = filename;

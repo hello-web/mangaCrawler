@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("chapter")]
-    abstract class Chapter : IChapter, IUpdateThumb
+    class Chapter : IChapter, IUpdateThumb
     {
         [Key]
         public ulong Id { get; set; }
@@ -25,7 +25,10 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? CreateAt { get; set; }
         public ICollection<IPage> Pages { get; set; }
 
-        public abstract Task<IEnumerable<IPage>> GetPages();
+        public virtual Task<IEnumerable<IPage>> GetPages()
+        {
+            return Task.Run<IEnumerable<IPage>>(() => new List<IPage>());
+        }
 
         public void Save()
         {

@@ -168,9 +168,9 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoPage : Page
     {
-        public async override Task<bool> DownloadPage(string filename)
+        public override Task<bool> DownloadPage(string filename)
         {
-            return true;
+            return Task.Run(() => true);
         }
     }
 }

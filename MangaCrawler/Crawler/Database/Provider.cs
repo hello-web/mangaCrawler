@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("provider")]
-    abstract class Provider : IProvider
+    class Provider : IProvider
     {
         [Key]
         public uint Id { get; set; }
@@ -18,7 +18,10 @@ namespace MangaCrawler.Crawler.Database
         public string Url { get; set; }
         public bool IsEnabled { get; set; }
 
-        public abstract Task<IEnumerable<IManga>> GetList();
+        public virtual Task<IEnumerable<IManga>> GetList()
+        {
+            return Task.Run<IEnumerable<IManga>>(() => new List<IManga>());
+        }
         public void Save()
         {
             using (var conn = Connector.GetConnection())
