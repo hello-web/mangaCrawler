@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
+using System.Drawing;
+using System.IO;
 
 namespace MangaCrawler.Crawler.Database
 {
     [Table("manga")]
-    class Manga
+    abstract class Manga : IManga
     {
         [Key]
         [Computed]
@@ -23,21 +25,53 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? UpdateAt { get; set; }
         public DateTime? CreateAt { get; set; }
 
-        public static void AddManga(IManga manga)
+        public void Save()
         {
-            var mangaE = new Manga()
-            {
-                CreateAt = DateTime.Now,
-                UpdateAt = DateTime.Now,
-                IdProvider = 1,
-                Title = manga.Title,
-                Url = manga.Url,
-                ThumbUrl = manga.ThumbLink,
-            };
+            if (!CreateAt.HasValue) CreateAt = DateTime.Now;
+            UpdateAt = DateTime.Now;
 
             using (var conn = new Connector().GetConnection())
             {
-                conn.Insert(mangaE);
+                conn.Insert(this);
+            }
+        }
+        public abstract Task<ICollection<IChapter>> GetChapters();
+        public abstract Task<IDictionary<string, object>> GetMetas();
+        public Image GetThumbnail()
+        {
+            var coll = Cache.GetCollectionCache();
+            var cache = coll.FindOne(x => x.UrlImage == ThumbUrl);
+
+            if (cache == null)
+            {
+                //Schedule for Download Image
+                Job.JobScheduler.PushJob(new Job.JobDescription()
+                {
+                    AfterDownload = AfterDownload,
+                    UrlDownload = ThumbUrl,
+                });
+
+                return new Bitmap(230, 360);
+            }
+            else
+            {
+                return cache.GetImage();
+            }
+        }
+        private void AfterDownload(string filename, bool is_success)
+        {
+            if (is_success)
+            {
+                var coll = Cache.GetCollectionCache();
+                var ext = Path.GetExtension(ThumbUrl);
+                var newName = filename + ext;
+
+
+                coll.Insert(new CacheImg()
+                {
+                    UrlImage = ThumbUrl,
+                    NameImage = newName,
+                });
             }
         }
     }

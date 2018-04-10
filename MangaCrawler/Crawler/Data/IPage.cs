@@ -9,20 +9,15 @@ namespace MangaCrawler.Crawler.Data
     public interface IPage
     {
         ulong Id { get; set; }
-        string PageLink { get; set; }
-        string PagePath { get; set; }
-        uint PageNum { get; set; }
+        ulong IdChapter { get; set; }
+        string Url { get; set; }
+        string Path { get; set; }
+        uint Num { get; set; }
+        bool IsDownloaded { get; set; }
+        DateTime? UpdateAt { get; set; }
+        DateTime? DownloadAt { get; set; }
 
-        bool DownloadPage(string filename);
-    }
-
-    abstract class Page : IPage
-    {
-        public ulong Id { get; set; }
-        public string PageLink { get; set; }
-        public string PagePath { get; set; }
-        public uint PageNum { get; set; }
-
-        public abstract bool DownloadPage(string filename);
+        Task<bool> DownloadPage(string filename);
+        void Save();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom.Html;
 using MangaCrawler.Crawler.Data;
+using MangaCrawler.Crawler.Database;
 using MangaCrawler.Util;
 using System;
 using System.Collections.Generic;
@@ -7,20 +8,20 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using AProvider = MangaCrawler.Crawler.Data.Provider;
+using AProvider = MangaCrawler.Crawler.Database.Provider;
 
 namespace MangaCrawler.Crawler.Provider
 {
     class MangaIndo : AProvider
     {
-        private new string ProviderName = "Manga Indo";
-        private new string ProviderHome = "https://mangaindo.net/";
+        private new string Name { get; set; } = "Manga Indo";
+        private new string Url { get; set; } = "https://mangaindo.net/";
 
         public override async Task<ICollection<IManga>> GetList()
         {
             var crawler = new DomCrawler();
             var lstResult = new List<IManga>();
-            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, ProviderHome);
+            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
             await crawler.LoadHtmlAsync(stream);
 
             var elements = crawler.Query("div.ltsc > div.mng");
@@ -37,7 +38,7 @@ namespace MangaCrawler.Crawler.Provider
                     var manga = new MangaIndoManga()
                     {
                         Url = link.Href,
-                        ThumbLink = thumb.Source,
+                        ThumbUrl = thumb.Source,
                         Title = link.InnerHtml
                     };
 
@@ -56,7 +57,7 @@ namespace MangaCrawler.Crawler.Provider
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-            var counter = 1;
+            uint counter = 1;
             await crawler.LoadHtmlAsync(stream);
 
             var elements = crawler.Query("div.cl > ul > li");
@@ -73,7 +74,7 @@ namespace MangaCrawler.Crawler.Provider
                     {
                         Url = link.Href,
                         Title = link.InnerHtml,
-                        ChapterNum = 0,
+                        Num = 0,
                     };
 
                     lstResult.Add(chapter);
@@ -84,7 +85,7 @@ namespace MangaCrawler.Crawler.Provider
 
             foreach (var elm in lstResult)
             {
-                elm.ChapterNum = counter;
+                elm.Num = counter;
                 counter++;
             }
             
@@ -109,7 +110,7 @@ namespace MangaCrawler.Crawler.Provider
             if (Pages == null)
             {
                 //start crawling web
-                var counter = 1;
+                uint counter = 1;
                 var crawler = new DomCrawler();
                 var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
 
@@ -123,8 +124,8 @@ namespace MangaCrawler.Crawler.Provider
                 {
                     Pages.Add(new MangaIndoPage()
                     {
-                        PageNum = ++counter,
-                        PageLink = element.Source,
+                        Num = ++counter,
+                        Url = element.Source,
                     });
                 }
             }
@@ -135,7 +136,7 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoPage : Page
     {
-        public override bool DownloadPage(string filename)
+        public async override Task<bool> DownloadPage(string filename)
         {
             return true;
         }

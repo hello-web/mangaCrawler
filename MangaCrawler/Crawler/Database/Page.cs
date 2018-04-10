@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MangaCrawler.Crawler.Database
 {
     [Table("page")]
-    class Page
+    abstract class Page : IPage
     {
         public ulong Id { get; set; }
         public ulong IdChapter { get; set; }
@@ -20,20 +20,14 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? UpdateAt { get; set; }
         public DateTime? DownloadAt { get; set; }
 
-        public static void AddPage(IPage page, IChapter chapter)
+        public abstract Task<bool> DownloadPage(string filename);
+        public void Save()
         {
-            var pageT = new Page()
-            {
-                UpdateAt = DateTime.Now,
-                IdChapter = chapter.Id,
-                Num = page.PageNum,
-                Url = page.PageLink,
-                Path = page.PagePath,
-            };
+            UpdateAt = DateTime.Now;
 
             using (var conn = new Connector().GetConnection())
             {
-                conn.Insert(pageT);
+                conn.Insert(this);
             }
         }
     }

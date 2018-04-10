@@ -122,6 +122,7 @@ DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
+  `Url`  varchar(500) NOT NULL,
   `IsEnabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
