@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.21, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.19, for Win64 (x86_64)
 --
 -- Host: localhost    Database: crawler
 -- ------------------------------------------------------
--- Server version	5.7.21-log
+-- Server version	5.7.19-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,18 +40,10 @@ CREATE TABLE `chapter` (
   `ThumbUrl` varchar(500) DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,
   `Updateat` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `chapter_un` (`IdManga`,`Title`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `chapter`
---
-
-LOCK TABLES `chapter` WRITE;
-/*!40000 ALTER TABLE `chapter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `chapter` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `manga`
@@ -69,18 +61,10 @@ CREATE TABLE `manga` (
   `ThumbUrl` varchar(500) DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,
   `UpdateAt` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `manga_un` (`IdProvider`,`Title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `manga`
---
-
-LOCK TABLES `manga` WRITE;
-/*!40000 ALTER TABLE `manga` DISABLE KEYS */;
-/*!40000 ALTER TABLE `manga` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `page`
@@ -103,15 +87,6 @@ CREATE TABLE `page` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `page`
---
-
-LOCK TABLES `page` WRITE;
-/*!40000 ALTER TABLE `page` DISABLE KEYS */;
-/*!40000 ALTER TABLE `page` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `provider`
 --
 
@@ -121,20 +96,11 @@ DROP TABLE IF EXISTS `provider`;
 CREATE TABLE `provider` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
-  `Url`  varchar(500) NOT NULL,
+  `Url` varchar(500) NOT NULL,
   `IsEnabled` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `provider`
---
-
-LOCK TABLES `provider` WRITE;
-/*!40000 ALTER TABLE `provider` DISABLE KEYS */;
-/*!40000 ALTER TABLE `provider` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -145,4 +111,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-09 14:27:23
+-- Dump completed on 2018-04-10 23:21:03
