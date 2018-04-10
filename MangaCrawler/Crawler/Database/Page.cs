@@ -17,8 +17,8 @@ namespace MangaCrawler.Crawler.Database
         public uint Num { get; set; }
         public string Url { get; set; }
         public string Path { get; set; }
-        public bool IsDownloaded { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public bool IsDownload { get; set; }
+        public DateTime? CreateAt { get; set; }
         public DateTime? DownloadAt { get; set; }
 
         public virtual Task<bool> DownloadPage(string filename)
@@ -27,7 +27,7 @@ namespace MangaCrawler.Crawler.Database
         }
         public void Save()
         {
-            UpdateAt = DateTime.Now;
+            CreateAt = DateTime.Now;
 
             using (var conn = Connector.GetConnection())
             {

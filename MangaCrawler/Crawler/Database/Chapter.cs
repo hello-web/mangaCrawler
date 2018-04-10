@@ -23,7 +23,6 @@ namespace MangaCrawler.Crawler.Database
         public string Thumb { get; set; }
         public DateTime? UpdateAt { get; set; }
         public DateTime? CreateAt { get; set; }
-        public ICollection<IPage> Pages { get; set; }
 
         public virtual Task<IEnumerable<IPage>> GetPages()
         {

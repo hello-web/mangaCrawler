@@ -19,7 +19,6 @@ namespace MangaCrawler.Crawler.Data
         uint Num { get; set; }
         DateTime? UpdateAt { get; set; }
         DateTime? CreateAt { get; set; }
-        ICollection<IPage> Pages { get; set; }
 
         void Save();
         Image GetThumbnail();

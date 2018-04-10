@@ -13,8 +13,8 @@ namespace MangaCrawler.Crawler.Data
         string Url { get; set; }
         string Path { get; set; }
         uint Num { get; set; }
-        bool IsDownloaded { get; set; }
-        DateTime? UpdateAt { get; set; }
+        bool IsDownload { get; set; }
+        DateTime? CreateAt { get; set; }
         DateTime? DownloadAt { get; set; }
 
         Task<bool> DownloadPage(string filename);

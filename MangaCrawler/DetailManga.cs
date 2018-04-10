@@ -16,7 +16,7 @@ namespace MangaCrawler
         IEnumerable<IChapter> lstChapter = new List<IChapter>();
         IDictionary<string, object> lstMeta = new Dictionary<string, object>();
 
-        private delegate void Change();
+        private delegate void Change(List<ListViewItem> list);
 
         public DetailManga(IManga manga)
         {
@@ -28,26 +28,28 @@ namespace MangaCrawler
             {
                 lstChapter = await manga.GetChapters();
                 lstMeta = await manga.GetMetas();
+                var lstViewItem = new List<ListViewItem>();
 
                 foreach (var chapter in lstChapter)
                 {
-                    await chapter.GetPages();
+                    var item = new ListViewItem(chapter.Num.ToString());
+                    var pages = await chapter.GetPages();
+                    item.SubItems.Add(pages.LongCount().ToString());
+                    item.SubItems.Add(chapter.Title);
+
+                    lstViewItem.Add(item);
                 }
 
-                Invoke(new Change(ChangeList));
+                Invoke(new Change(ChangeList), lstViewItem);
             });
         }
 
-        private void ChangeList()
+        private void ChangeList(List<ListViewItem> items)
         {
             listView2.Items.Clear();
 
-            foreach (var chapter in lstChapter)
+            foreach (var item in items)
             {
-                var item = new ListViewItem(chapter.Num.ToString());
-                item.SubItems.Add(chapter.Pages.Count.ToString());
-                item.SubItems.Add(chapter.Title);
-
                 listView2.Items.Add(item);
             }
         }

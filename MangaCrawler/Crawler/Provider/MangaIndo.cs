@@ -84,10 +84,11 @@ namespace MangaCrawler.Crawler.Provider
     {
         public async override Task<IEnumerable<IChapter>> GetChapters()
         {
+            var existChapter = await GetFromDatabase();
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-            uint counter = 1;
+            uint counter = existChapter.Max(x => x.Num) + 1;
             await crawler.LoadHtmlAsync(stream);
 
             var elements = crawler.Query("div.cl > ul > li");
@@ -107,8 +108,12 @@ namespace MangaCrawler.Crawler.Provider
                         Title = link.InnerHtml,
                         Num = 0,
                     };
+                    var ext = (from a in existChapter
+                               where a.Title == chapter.Title
+                               select a).FirstOrDefault();
 
-                    lstResult.Add(chapter);
+                    if (ext == null)
+                        lstResult.Add(chapter);
                 }
             }
             
@@ -116,11 +121,36 @@ namespace MangaCrawler.Crawler.Provider
 
             foreach (var elm in lstResult)
             {
-                elm.Num = counter;
-                counter++;
+                try
+                {
+                    elm.Num = counter;
+                    elm.Save();
+                    counter++;
+                } catch (Exception ex)
+                {
+                    //
+                }
             }
             
-            return lstResult;
+            return await GetFromDatabase();
+        }
+        private async Task<IEnumerable<IChapter>> GetFromDatabase()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM chapter WHERE IdManga = @manga";
+                    var param = new { manga = this.Id };
+                    var query = await conn.QueryAsync<MangaIndoChapter>(sql, param);
+
+                    return query;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public async override Task<IDictionary<string, object>> GetMetas()
@@ -138,31 +168,57 @@ namespace MangaCrawler.Crawler.Provider
     {
         public override async Task<IEnumerable<IPage>> GetPages()
         {
-            if (Pages == null)
+            var existsPages = await GetFromDatabase();
+
+            if (existsPages.LongCount() > 0)
+                return existsPages;
+
+            //start crawling web
+            uint counter = 1;
+            var crawler = new DomCrawler();
+            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
+
+            await crawler.LoadHtmlAsync(stream);
+
+            var elements = crawler.Query("#readerarea img");
+
+            foreach (IHtmlImageElement element in elements)
             {
-                //start crawling web
-                uint counter = 1;
-                var crawler = new DomCrawler();
-                var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-
-                await crawler.LoadHtmlAsync(stream);
-
-                var elements = crawler.Query("#readerarea img");
-
-                Pages = new List<IPage>();
-
-                foreach (IHtmlImageElement element in elements)
+                try
                 {
-                    Pages.Add(new MangaIndoPage()
+                    var page = new MangaIndoPage()
                     {
                         IdChapter = this.Id,
                         Num = ++counter,
                         Url = element.Source,
-                    });
+                    };
+
+                    page.Save();
+                } catch (Exception ex)
+                {
+                    //
                 }
             }
 
-            return Pages;
+            return await GetFromDatabase();
+        }
+
+        private async Task<IEnumerable<IPage>> GetFromDatabase()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM page WHERE IdChapter = @chapter";
+                    var param = new { chapter = this.Id };
+                    var query = await conn.QueryAsync<MangaIndoPage>(sql, param);
+
+                    return query;
+                } catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 

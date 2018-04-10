@@ -56,8 +56,8 @@ namespace MangaCrawler.Crawler.Job
         {
             using (var conn = Connector.GetConnection())
             {
-                var sqlm = "SELECT * FROM manga WHERE Thumb IS NULL";
-                var sqlc = "SELECT * FROM chapter WHERE Thumb IS NULL";
+                var sqlm = "SELECT * FROM manga WHERE Thumb IS NULL AND ThumbUrl IS NOT NULL";
+                var sqlc = "SELECT * FROM chapter WHERE Thumb IS NULL AND ThumbUrl IS NOT NULL";
                 var resm = conn.Query<Manga>(sqlm);
                 var resc = conn.Query<Chapter>(sqlc);
 

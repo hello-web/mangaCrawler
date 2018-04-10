@@ -96,7 +96,7 @@ CREATE TABLE `page` (
   `Url` varchar(500) NOT NULL,
   `Path` varchar(100) DEFAULT NULL,
   `IsDownload` tinyint(1) NOT NULL DEFAULT '0',
-  `UpdateAt` timestamp NULL DEFAULT NULL,
+  `DownloadAt` timestamp NULL DEFAULT NULL,
   `CreateAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
