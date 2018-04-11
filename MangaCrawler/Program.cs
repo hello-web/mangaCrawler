@@ -30,37 +30,10 @@ namespace MangaCrawler
                 Application.Exit();
                 return;
             }
-
-            PrepareApp();
-
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
-        }
-
-        static void PrepareApp()
-        {
-            if (!Directory.Exists(CachePath))
-                Directory.CreateDirectory(CachePath);
-            
-            if (!File.Exists(LitePath))
-            {
-                var connStr = new ConnectionString()
-                {
-                    Filename = LitePath,
-                    Flush = false,
-                    Upgrade = true,
-                    Mode = LiteDB.FileMode.Shared,
-                };
-
-                var liteDb = new LiteDatabase(connStr);
-                var collCache = liteDb.GetCollection<CacheImg>();
-                
-                try
-                {
-                    collCache.Insert(new CacheImg());
-                } catch { }
-            }
         }
     }
 }

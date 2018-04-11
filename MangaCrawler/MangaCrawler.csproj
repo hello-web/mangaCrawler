@@ -94,7 +94,6 @@
     <Compile Include="Crawler\Database\Manga.cs" />
     <Compile Include="Crawler\Database\Page.cs" />
     <Compile Include="Crawler\Database\Provider.cs" />
-    <Compile Include="Crawler\Data\CacheImg.cs" />
     <Compile Include="Crawler\Data\IChapter.cs" />
     <Compile Include="Crawler\Data\IManga.cs" />
     <Compile Include="Crawler\Data\IPage.cs" />

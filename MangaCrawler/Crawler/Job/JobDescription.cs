@@ -23,7 +23,7 @@ namespace MangaCrawler.Crawler.Job
             try
             {
                 var download = await HttpDownloader.GetResponseAsync(HttpMethod.Get, UrlDownload);
-
+                
                 if (download.IsSuccessStatusCode)
                 {
                     using (var fs = new FileStream(tmpPath, FileMode.CreateNew, FileAccess.Write))
