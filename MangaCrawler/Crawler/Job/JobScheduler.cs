@@ -31,23 +31,20 @@ namespace MangaCrawler.Crawler.Job
         {
             CollectWork();
 
-            if (queueJob.Count > 0)
+            for (int i = 0; i < threads.Length; i++)
             {
-                for (int i = 0; i < threads.Length; i++)
+                var thread = threads[i];
+
+                if ((
+                    thread == null ||
+                    thread.ThreadState == ThreadState.Stopped ||
+                    thread.ThreadState == ThreadState.Aborted) && queueJob.Count > 0)
                 {
-                    var thread = threads[i];
+                    var job = queueJob.Dequeue();
+                    var thStart = new ThreadStart(job.Download);
 
-                    if (
-                        thread == null ||
-                        thread.ThreadState == ThreadState.Stopped ||
-                        thread.ThreadState == ThreadState.Aborted)
-                    {
-                        var job = queueJob.Dequeue();
-                        var thStart = new ThreadStart(job.Download);
-
-                        thread = new Thread(thStart);
-                        thread.Start();
-                    }
+                    thread = new Thread(thStart);
+                    thread.Start();
                 }
             }
         }

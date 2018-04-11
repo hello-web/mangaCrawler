@@ -88,8 +88,13 @@ namespace MangaCrawler.Crawler.Provider
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-            uint counter = existChapter.Max(x => x.Num) + 1;
+            uint counter = 1;
             await crawler.LoadHtmlAsync(stream);
+
+            try
+            {
+                counter = existChapter.Max(x => x.Num) + 1;
+            } catch { }
 
             var elements = crawler.Query("div.cl > ul > li");
 

@@ -33,11 +33,17 @@ namespace MangaCrawler.Crawler.Database
         {
             using (var conn = Connector.GetConnection())
             {
-                var sql = "SELECT id FROM provider WHERE name = @Name";
-                var param = new { Name };
-                var id = conn.QuerySingle<uint>(sql, param);
+                try
+                {
+                    var sql = "SELECT id FROM provider WHERE name = @Name";
+                    var param = new { Name };
+                    var id = conn.QuerySingle<uint>(sql, param);
 
-                Id = id;
+                    Id = id;
+                } catch
+                {
+                    // Provider not registed yet
+                }
             }
         }
     }
