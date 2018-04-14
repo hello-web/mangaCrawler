@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
 using LiteDB;
+using MangaCrawler.App;
 using MangaCrawler.Crawler.Data;
 using MangaCrawler.Crawler.Database;
 using MangaCrawler.Util;
@@ -33,24 +34,10 @@ namespace MangaCrawler
                 return;
             }
 
-            Cef.EnableHighDPISupport();
-            var exitCode = Cef.ExecuteProcess();
+            var app = new AppMain();
 
-            if (exitCode >= 0)
-                return;
-
-            var settings = new CefSettings();
-            
-            Cef.Initialize(settings);
-            var form = new Form();
-            var browser = new ChromiumWebBrowser("www.google.com")
-            {
-                Dock = DockStyle.Fill,
-            };
-            form.Controls.Add(browser);
-            Application.Run(form);
-            browser.Load("http://www.google.com");
-            Cef.Shutdown();
+            app.Initialize();
+            app.RunApp();
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new MainForm());
