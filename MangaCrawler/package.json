@@ -5,10 +5,10 @@
   "author": "nothing628 <yogyphang@gmail.com>",
   "private": true,
   "scripts": {
-    "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
+    "watchify": "watchify -vd -p browserify-hmr -e www/src/main.js -o www/dist/build.js",
     "serve": "http-server -o -c 1 -a localhost",
     "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js"
+    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o www/dist/build.css ] -e www/src/main.js | uglifyjs -c warnings=false -m > www/dist/build.js"
   },
   "browserify": {
     "transform": [
@@ -20,7 +20,10 @@
     "vue": "vue/dist/vue.common.js"
   },
   "dependencies": {
-    "vue": "^2.0.1"
+    "vue": "^2.0.1",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "vuex-router-sync": "^5.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

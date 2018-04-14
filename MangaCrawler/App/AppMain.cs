@@ -31,7 +31,7 @@ namespace MangaCrawler.App
                 IsCSPBypassing = true,
                 IsSecure = false,
                 SchemeName = "http",
-                SchemeHandlerFactory = new AppScheme()
+                SchemeHandlerFactory = new AppScheme(Application.StartupPath, "http://local.com")
             };
 
             settings = new CefSettings()
