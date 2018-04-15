@@ -42,6 +42,8 @@ namespace MangaCrawler.App
             
             settings.RegisterScheme(scheme);
 
+            CefSharpSettings.WcfEnabled = true;
+            CefSharpSettings.WcfTimeout = TimeSpan.FromSeconds(10);
             CefSharpSettings.LegacyJavascriptBindingEnabled = true;
             Cef.Initialize(settings);
             return true;
@@ -60,9 +62,26 @@ namespace MangaCrawler.App
 
             browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
             browser.TitleChanged += Browser_TitleChanged;
-            browser.RegisterAsyncJsObject("CS", new AppBinding());
-
+            browser.JavascriptObjectRepository.ResolveObject += JavascriptObjectRepository_ResolveObject;
+            browser.JavascriptObjectRepository.ObjectBoundInJavascript += JavascriptObjectRepository_ObjectBoundInJavascript;
+            browser.RegisterJsObject("CS", new AppBinding());
             form.Controls.Add(browser);
+        }
+
+        private void JavascriptObjectRepository_ObjectBoundInJavascript(object sender, CefSharp.Event.JavascriptBindingEventArgs e)
+        {
+            var x = e.ObjectName;
+        }
+
+        private void JavascriptObjectRepository_ResolveObject(object sender, CefSharp.Event.JavascriptBindingEventArgs e)
+        {
+            var repo = e.ObjectRepository;
+            if (e.ObjectName == "CS")
+            {
+                BindingOptions bindingOptions = BindingOptions.DefaultBinder;
+                bindingOptions.CamelCaseJavascriptNames = false;
+                repo.Register("CS", new AppBinding(), isAsync: false, options: bindingOptions);
+            }
         }
 
         private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
