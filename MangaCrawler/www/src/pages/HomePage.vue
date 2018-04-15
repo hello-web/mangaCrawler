@@ -5,11 +5,11 @@
                 <div class="portlet-title">
                     <div class="caption font-green-sharp">
                         <i class="icon-speech font-green-sharp"></i>
-                        <span class="caption-subject">Manga List</span>
+                        <span class="caption-subject">Manga List {{mangaCount}}</span>
                         <span class="caption-helper"></span>
                     </div>
                     <div class="actions">
-                        <a class="btn btn-circle red-sunglo "><i class="fa fa-plus"></i> Add</a>
+                        <a class="btn btn-circle red-sunglo " @click="addCount"><i class="fa fa-plus"></i> Add</a>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 text-center">
                             <ul class="pagination pagination-block">
                                 <li>
                                     <a href="javascript:;">
@@ -76,7 +76,6 @@
                             </ul>
                         </div>
                     </div>
-                    <router-link to="/product" class="back-link">Product</router-link>
                 </div>
             </div>
         </div>
@@ -86,6 +85,16 @@
 export default {
     data() {
         return {}
+    },
+    computed: {
+        mangaCount() {
+            return this.$store.state.Manga.count
+        }
+    },
+    methods: {
+        addCount() {
+            this.$store.commit('manga/increment')
+        }
     }
 }
 </script>
