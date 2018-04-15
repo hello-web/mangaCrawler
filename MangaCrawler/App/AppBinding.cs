@@ -46,7 +46,7 @@ namespace MangaCrawler.App
             });
         }
 
-        public void GetMangaList(int id, IJavascriptCallback javascriptCallback)
+        public void GetMangaList(int id, int page, IJavascriptCallback javascriptCallback)
         {
             var provider = (from a in Providers
                             where a.Value.Id == id
@@ -59,9 +59,11 @@ namespace MangaCrawler.App
                         await javascriptCallback.ExecuteAsync("");
                     else
                     {
+                        var skipCnt = (page - 1) * 20;
                         var list = await provider.GetList();
+                        var sliceList = list.Skip(skipCnt).Take(20);
+                        var response = ToJson(sliceList);
 
-                        var response = ToJson(list);
                         await javascriptCallback.ExecuteAsync(response);
                     }
                 }

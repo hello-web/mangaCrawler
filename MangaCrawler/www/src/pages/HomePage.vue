@@ -5,7 +5,7 @@
                 <div class="portlet-title">
                     <div class="caption font-green-sharp">
                         <i class="icon-speech font-green-sharp"></i>
-                        <span class="caption-subject">Manga List {{mangaCount}}</span>
+                        <span class="caption-subject">Manga List</span>
                         <span class="caption-helper"></span>
                     </div>
                     <div class="actions">
@@ -14,13 +14,13 @@
                 </div>
                 <div class="portlet-body">
                     <div class="mt-element-card mt-element-overlay">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" v-for="i in 20" :key="i">
+                        <div class="row flex-container">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-item" v-for="(data,i) in mangaList" :key="i">
                                 <div class="mt-card-item">
                                     <div class="mt-card-avatar mt-overlay-4">
-                                        <img src="https://myanimelist.cdn-dena.com/images/manga/2/196863.jpg">
+                                        <img :src="getThumbUrl(data)">
                                         <div class="mt-overlay">
-                                            <h2>Soul Land 3:The Legend of the Dragon King Chapter 7</h2>
+                                            <h2>{{ data.Title }}</h2>
                                             <div class="mt-info font-white">
                                                 <div class="mt-card-content">
                                                     <p class="mt-card-desc font-white">Description about manga</p>
@@ -87,14 +87,34 @@ export default {
         return {}
     },
     computed: {
-        mangaCount() {
-            return this.$store.state.Manga.count
+        mangaList() {
+            return this.$store.getters['manga/mangalist']
         }
     },
     methods: {
+        getThumbUrl(item) {
+            if (item.Thumb == null || item.Thumb == "")
+                return item.ThumbUrl
+            else
+                return 'http://local.com/' + item.Thumb
+        },
         addCount() {
-            this.$store.commit('manga/increment')
+            this.$router.push('/product')
+            //this.$store.commit('manga/increment')
         }
     }
 }
 </script>
+<style>
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.flex-container .flex-item {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
+}
+</style>

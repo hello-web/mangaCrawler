@@ -33,6 +33,9 @@ export default {
         AppSidebar,
         AppBreadcrumb,
         AppTitle,
+    },
+    mounted() {
+        this.$store.dispatch('provider/refreshProvider')
     }
 }
 </script>

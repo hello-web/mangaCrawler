@@ -8,6 +8,7 @@ import provider from './modules/provider'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+    actions: {},
     modules: {
         manga,
         chapter,
