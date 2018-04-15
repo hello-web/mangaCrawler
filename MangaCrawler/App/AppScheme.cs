@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MangaCrawler.App
@@ -16,7 +17,7 @@ namespace MangaCrawler.App
 
         public AppScheme(string basePath, string baseUrl)
         {
-            this.basePath = Path.Combine(basePath, "www\\");
+            this.basePath = basePath;
             this.baseUrl = baseUrl;
             fileLookup = new Dictionary<string, string>();
             fileLookup.Add("/", "index.html");
@@ -24,15 +25,25 @@ namespace MangaCrawler.App
 
         private string GetFullpath(string filename)
         {
-            if (filename[0] == '\\')
-                return Path.Combine(basePath, filename.Substring(1));
+            var fname = filename[0] == '\\' ? filename.Substring(1) : filename;
+            var wwwDir = Path.Combine(basePath, "www\\", fname);
+            var cacheDir = Path.Combine(basePath, "cache\\", fname);
 
-            return Path.Combine(basePath, filename);
+            if (File.Exists(wwwDir))
+                return wwwDir;
+            if (File.Exists(cacheDir))
+                return cacheDir;
+            
+            return "";
         }
 
         private string GetPath(string url)
         {
-            return url.Replace(baseUrl, "");
+            var patern = new Regex("#.+");
+            var path = url.Replace(baseUrl, "");
+            var cleanPath = patern.Replace(path, "");
+
+            return cleanPath;
         }
 
         private string LookupFile(string path)
@@ -43,10 +54,7 @@ namespace MangaCrawler.App
             string cleanPath = path.Replace('/', '\\');
             string fullPath = GetFullpath(cleanPath);
 
-            if (File.Exists(fullPath))
-                return fullPath;
-
-            return "";
+            return fullPath;
         }
 
         public IResourceHandler Create(IBrowser browser, IFrame frame, string schemeName, IRequest request)

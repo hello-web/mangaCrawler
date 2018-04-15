@@ -9,6 +9,8 @@ import { sync } from 'vuex-router-sync'
 
 sync(store, router)
 
+Vue.prototype.$bus = new Vue()
+
 new Vue({ // eslint-disable-line no-new
   el: '#app',
   router,

@@ -7,11 +7,9 @@
                 <app-sidebar></app-sidebar>
                 <div class="page-content-wrapper">
                     <div class="page-content">
+                        <app-breadcrumb></app-breadcrumb>
+                        <app-title></app-title>
                         <router-view></router-view>
-                        <div class="help-text">
-                            <p>Vue.js 2 Single Page App (SPA) Example with vuex and vue-router.</p>
-                            <a href="https://github.com/skyronic/vue-spa">View Source Code</a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -21,18 +19,20 @@
 </template>
 
 <script>
-import Hello from './components/Hello.vue'
 import AppHeader from './components/Header.vue'
 import AppFooter from './components/Footer.vue'
 import AppSidebar from './components/Sidebar.vue'
+import AppBreadcrumb from './components/Breadcrumb.vue'
+import AppTitle from './components/Title.vue'
 
 export default {
-  name: 'app',
-  components: {
-    Hello,
-    AppHeader,
-    AppFooter,
-    AppSidebar,
-  }
+    name: 'app',
+    components: {
+        AppHeader,
+        AppFooter,
+        AppSidebar,
+        AppBreadcrumb,
+        AppTitle,
+    }
 }
 </script>

@@ -1,7 +1,9 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using MangaCrawler.Crawler.Job;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,7 +67,20 @@ namespace MangaCrawler.App
             browser.JavascriptObjectRepository.ResolveObject += JavascriptObjectRepository_ResolveObject;
             browser.JavascriptObjectRepository.ObjectBoundInJavascript += JavascriptObjectRepository_ObjectBoundInJavascript;
             browser.RegisterJsObject("CS", new AppBinding());
+            form.Load += Form_Load;
+            form.FormBorderStyle = FormBorderStyle.None;
+            form.WindowState = FormWindowState.Maximized;
             form.Controls.Add(browser);
+        }
+
+        private void Form_Load(object sender, EventArgs e)
+        {
+            var cachePath = Path.Combine(Application.StartupPath, "cache\\");
+
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+
+            JobScheduler.Start();
         }
 
         private void JavascriptObjectRepository_ObjectBoundInJavascript(object sender, CefSharp.Event.JavascriptBindingEventArgs e)
