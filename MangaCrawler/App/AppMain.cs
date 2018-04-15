@@ -57,7 +57,25 @@ namespace MangaCrawler.App
             {
                 Dock = DockStyle.Fill,
             };
+
+            browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+            browser.TitleChanged += Browser_TitleChanged;
+            browser.RegisterAsyncJsObject("CS", new AppBinding());
+
             form.Controls.Add(browser);
+        }
+
+        private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
+        {
+            Action act = () => form.Text = e.Title;
+            
+            form.Invoke(act);
+        }
+
+        private void Browser_IsBrowserInitializedChanged(object sender, IsBrowserInitializedChangedEventArgs e)
+        {
+            if (e.IsBrowserInitialized)
+                browser.ShowDevTools();
         }
 
         public AppMain()

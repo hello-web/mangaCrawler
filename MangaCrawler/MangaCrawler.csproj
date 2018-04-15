@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\AppBinding.cs" />
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppScheme.cs" />
     <Compile Include="Crawler\Database\Chapter.cs" />
