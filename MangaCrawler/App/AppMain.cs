@@ -68,7 +68,6 @@ namespace MangaCrawler.App
             browser.JavascriptObjectRepository.ObjectBoundInJavascript += JavascriptObjectRepository_ObjectBoundInJavascript;
             browser.RegisterJsObject("CS", new AppBinding());
             form.Load += Form_Load;
-            form.FormBorderStyle = FormBorderStyle.None;
             form.WindowState = FormWindowState.Maximized;
             form.Controls.Add(browser);
         }
