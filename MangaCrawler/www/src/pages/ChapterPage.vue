@@ -8,6 +8,14 @@
 export default {
     data() {
         return {}
+    },
+    methods: {
+        refreshChapter(id) {
+            console.log(id)
+        }
+    },
+    mounted() {
+        this.refreshChapter(this.$route.params.id)
     }
 }
 </script>

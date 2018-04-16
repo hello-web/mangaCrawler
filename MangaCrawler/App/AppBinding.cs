@@ -69,5 +69,16 @@ namespace MangaCrawler.App
                 }
             });
         }
+
+        public void GetChapterList(int id, int page, IJavascriptCallback javascriptCallback)
+        {
+            Task.Run(async () =>
+            {
+                using (javascriptCallback)
+                {
+                    await javascriptCallback.ExecuteAsync("");
+                }
+            });
+        }
     }
 }

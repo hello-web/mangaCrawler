@@ -9,7 +9,7 @@
                         <span class="caption-helper"></span>
                     </div>
                     <div class="actions">
-                        <a class="btn btn-circle red-sunglo " @click="addCount"><i class="fa fa-plus"></i> Add</a>
+                        <a class="btn btn-circle red-sunglo "><i class="fa fa-plus"></i> Add</a>
                     </div>
                 </div>
                 <div class="portlet-body">
@@ -31,7 +31,7 @@
                                                     <div class="mt-card-social">
                                                         <ul>
                                                             <li>
-                                                                <a class="mt-card-btn">
+                                                                <a class="mt-card-btn" @click="detailManga(data)">
                                                                     <i class="icon-book-open"></i>
                                                                 </a>
                                                             </li>
@@ -102,9 +102,8 @@ export default {
             else
                 return 'http://local.com/' + item.Thumb
         },
-        addCount() {
-            this.$router.push('/product')
-            //this.$store.commit('manga/increment')
+        detailManga(manga) {
+            this.$router.push({name: 'chapter', params: { id: manga.Id }})
         }
     }
 }

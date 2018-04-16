@@ -3,6 +3,7 @@ export default {
     state: {
         mangaList: [],
         page: 1,
+        maxPage: 0,
     },
     mutations: {
         clearManga(state) {

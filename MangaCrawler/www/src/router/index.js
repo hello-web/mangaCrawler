@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
-import ProductPage from '../pages/ProductPage.vue'
+import ChapterPage from '../pages/ChapterPage.vue'
 
 Vue.use(Router)
 
@@ -13,9 +13,9 @@ export default new Router({
             component: HomePage
         },
         {
-            path: '/product',
-            name: 'product',
-            component: ProductPage
+            path: '/chapter/:id',
+            name: 'chapter',
+            component: ChapterPage
         }
     ]
 })
