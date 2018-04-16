@@ -30,7 +30,6 @@ export default {
                 
                 let data = JSON.parse(x)
                 data.forEach(x => context.commit('pushManga', x))
-                console.log(context.state)
             })
         }
     }

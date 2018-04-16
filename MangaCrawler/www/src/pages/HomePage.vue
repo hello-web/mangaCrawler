@@ -18,27 +18,31 @@
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 flex-item" v-for="(data,i) in mangaList" :key="i">
                                 <div class="mt-card-item">
                                     <div class="mt-card-avatar mt-overlay-4">
-                                        <img :src="getThumbUrl(data)">
+                                        <div class="img-container img-manga">
+                                            <img :src="getThumbUrl(data)">
+                                        </div>
                                         <div class="mt-overlay">
                                             <h2>{{ data.Title }}</h2>
                                             <div class="mt-info font-white">
                                                 <div class="mt-card-content">
-                                                    <p class="mt-card-desc font-white">Description about manga</p>
+                                                    <p class="mt-card-desc font-white">
+                                                        Last release 19/04/2018; Genre : TEST, 2981;
+                                                    </p>
                                                     <div class="mt-card-social">
                                                         <ul>
                                                             <li>
                                                                 <a class="mt-card-btn">
-                                                                    <i class="icon-social-facebook"></i>
+                                                                    <i class="icon-book-open"></i>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="mt-card-btn">
-                                                                    <i class="icon-social-twitter"></i>
+                                                                    <i class="icon-badge"></i>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="mt-card-btn">
-                                                                    <i class="icon-social-dribbble"></i>
+                                                                    <i class="icon-drawer"></i>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -116,5 +120,19 @@ export default {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: auto;
+}
+.mt-card-item {
+    width: 100%;
+}
+.img-container.img-manga {
+    width: 100%;
+    padding-top: 143%;
+}
+.img-container.img-manga img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 </style>
