@@ -38,9 +38,6 @@ namespace MangaCrawler
 
             app.Initialize();
             app.RunApp();
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new MainForm());
         }
     }
 }

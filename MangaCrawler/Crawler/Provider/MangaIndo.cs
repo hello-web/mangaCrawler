@@ -12,9 +12,9 @@ using AProvider = MangaCrawler.Crawler.Database.Provider;
 
 namespace MangaCrawler.Crawler.Provider
 {
-    class MangaIndo : AProvider
+    class MangaIndoProvider : AProvider
     {
-        public MangaIndo()
+        public MangaIndoProvider()
         {
             Name = "Manga Indo";
             Url = "https://mangaindo.net/";
@@ -23,7 +23,51 @@ namespace MangaCrawler.Crawler.Provider
             GetId();
         }
 
-        public override async Task<IEnumerable<IManga>> GetList()
+        public override async Task<IEnumerable<IManga>> GetMangas(bool update = false)
+        {
+            if (update)
+                await GetFromWebsite();
+
+            return await GetFromDatabase();
+        }
+
+        public override async Task<IManga> GetManga(int Id, bool update = false)
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM manga WHERE Id = @manga";
+                    var param = new { manga = Id };
+                    var query = await conn.QuerySingleAsync<MangaIndoManga>(sql, param);
+
+                    return query;
+                } catch
+                {
+                    throw;
+                }
+            }
+        }
+
+        private async Task<IEnumerable<IManga>> GetFromDatabase()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM manga WHERE IdProvider = @provider";
+                    var param = new { provider = this.Id };
+                    var query = await conn.QueryAsync<MangaIndoManga>(sql, param);
+
+                    return query;
+                } catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        private async Task GetFromWebsite()
         {
             var crawler = new DomCrawler();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
@@ -51,30 +95,11 @@ namespace MangaCrawler.Crawler.Provider
                         };
 
                         manga.Save();
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         throw ex;
                     }
-                }
-            }
-
-            return await GetFromDatabase();
-        }
-
-        private async Task<IEnumerable<IManga>> GetFromDatabase()
-        {
-            using (var conn = Connector.GetConnection())
-            {
-                try
-                {
-                    var sql = "SELECT * FROM manga WHERE IdProvider = @provider";
-                    var param = new { provider = this.Id };
-                    var query = await conn.QueryAsync<MangaIndoManga>(sql, param);
-
-                    return query;
-                } catch (Exception ex)
-                {
-                    throw ex;
                 }
             }
         }
@@ -82,9 +107,13 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoManga : Manga
     {
-        public async override Task<IEnumerable<IChapter>> GetChapters()
+        public async override Task<IEnumerable<IChapter>> GetChapters(bool update = false)
         {
             var existChapter = await GetFromDatabase();
+
+            if (!update)
+                return existChapter;
+
             var crawler = new DomCrawler();
             var lstResult = new List<IChapter>();
             var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);

@@ -41,7 +41,7 @@ namespace MangaCrawler.Crawler.Database
                 }
             }
         }
-        public virtual Task<IEnumerable<IChapter>> GetChapters()
+        public virtual Task<IEnumerable<IChapter>> GetChapters(bool update = false)
         {
             return Task.Run<IEnumerable<IChapter>>(() => new List<IChapter>());
         }

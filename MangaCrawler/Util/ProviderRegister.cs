@@ -14,7 +14,7 @@ namespace MangaCrawler.Util
         {
             List<IProvider> listProvider = new List<IProvider>();
 
-            listProvider.Add(new MangaIndo());
+            listProvider.Add(new MangaIndoProvider());
 
             foreach (var provider in listProvider)
                 provider.Save();

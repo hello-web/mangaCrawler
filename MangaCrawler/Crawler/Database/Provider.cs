@@ -18,9 +18,13 @@ namespace MangaCrawler.Crawler.Database
         public string Url { get; set; }
         public bool IsEnabled { get; set; }
 
-        public virtual Task<IEnumerable<IManga>> GetList()
+        public virtual Task<IEnumerable<IManga>> GetMangas(bool update = false)
         {
             return Task.Run<IEnumerable<IManga>>(() => new List<IManga>());
+        }
+        public virtual Task<IManga> GetManga(int Id, bool update = false)
+        {
+            return Task.Run<IManga>(() => new Manga() );
         }
         public void Save()
         {
