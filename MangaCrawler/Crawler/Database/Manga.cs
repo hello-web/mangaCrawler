@@ -45,6 +45,10 @@ namespace MangaCrawler.Crawler.Database
         {
             return Task.Run<IEnumerable<IChapter>>(() => new List<IChapter>());
         }
+        public virtual Task<IChapter> GetChapter(int id)
+        {
+            return Task.Run<IChapter>(() => new Chapter());
+        }
         public virtual Task<IDictionary<string, object>> GetMetas()
         {
             return Task.Run<IDictionary<string, object>>(() => new Dictionary<string, object>());

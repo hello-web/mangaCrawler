@@ -89,14 +89,14 @@ namespace MangaCrawler.App
         /// <param name="javascriptCallback"></param>
         public void GetChapterList(int id, int id_manga, int page, IJavascriptCallback javascriptCallback)
         {
-            var provider = (from a in Providers
-                            where a.Value.Id == id
-                            select a.Value).SingleOrDefault();
-
             Task.Run(async () =>
             {
                 using (javascriptCallback)
                 {
+                    var provider = (from a in Providers
+                                    where a.Value.Id == id
+                                    select a.Value).SingleOrDefault();
+
                     if (provider == null)
                         await javascriptCallback.ExecuteAsync("");
                     else
@@ -108,6 +108,40 @@ namespace MangaCrawler.App
                         var response = ToJson(sliceList);
 
                         await javascriptCallback.ExecuteAsync(response);
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// Get page list from chapter
+        /// </summary>
+        /// <param name="id">ID Provider</param>
+        /// <param name="id_manga">ID Manga</param>
+        /// <param name="id_chapter">ID Chapter</param>
+        /// <param name="javascriptCallback"></param>
+        public void GetPageList(int id, int id_manga, int id_chapter, IJavascriptCallback javascriptCallback)
+        {
+            Task.Run(async () =>
+            {
+                using (javascriptCallback)
+                {
+                    var provider = (from a in Providers
+                                    where a.Value.Id == id
+                                    select a.Value).SingleOrDefault();
+
+                    var manga = await provider?.GetManga(id_manga);
+                    var chapter = await manga?.GetChapter(id_chapter);
+                    var pages = await chapter?.GetPages();
+
+                    if (pages != null)
+                    {
+                        var response = ToJson(pages);
+
+                        await javascriptCallback.ExecuteAsync(response);
+                    } else
+                    {
+                        await javascriptCallback.ExecuteAsync("");
                     }
                 }
             });

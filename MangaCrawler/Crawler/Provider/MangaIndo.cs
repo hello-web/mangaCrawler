@@ -168,6 +168,23 @@ namespace MangaCrawler.Crawler.Provider
             
             return await GetFromDatabase();
         }
+        public async override Task<IChapter> GetChapter(int id, bool update = false)
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                try
+                {
+                    var sql = "SELECT * FROM chapter WHERE Id = @chapter";
+                    var param = new { chapter = id };
+                    var query = await conn.QuerySingleAsync<MangaIndoChapter>(sql, param);
+
+                    return query;
+                } catch
+                {
+                    throw;
+                }
+            }
+        }
         private async Task<IEnumerable<IChapter>> GetFromDatabase()
         {
             using (var conn = Connector.GetConnection())

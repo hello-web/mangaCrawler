@@ -14,7 +14,7 @@ namespace MangaCrawler.Crawler.Data
         bool IsEnabled { get; set; }
 
         Task<IEnumerable<IManga>> GetMangas(bool update = false);
-        Task<IManga> GetManga(int Id, bool update = false);
+        Task<IManga> GetManga(int id);
         void Save();
     }
 }

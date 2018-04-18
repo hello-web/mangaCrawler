@@ -22,7 +22,7 @@ namespace MangaCrawler.Crawler.Database
         {
             return Task.Run<IEnumerable<IManga>>(() => new List<IManga>());
         }
-        public virtual Task<IManga> GetManga(int Id, bool update = false)
+        public virtual Task<IManga> GetManga(int Id)
         {
             return Task.Run<IManga>(() => new Manga() );
         }

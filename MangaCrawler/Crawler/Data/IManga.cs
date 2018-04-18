@@ -22,6 +22,7 @@ namespace MangaCrawler.Crawler.Data
         bool Save();
         Image GetThumbnail();
         Task<IEnumerable<IChapter>> GetChapters(bool update = false);
+        Task<IChapter> GetChapter(int id);
         Task<IDictionary<string, object>> GetMetas();
     }
 }
