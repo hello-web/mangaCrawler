@@ -217,13 +217,23 @@ namespace MangaCrawler.Crawler.Provider
 
     class MangaIndoChapter : Chapter
     {
-        public override async Task<IEnumerable<IPage>> GetPages()
+        public override async Task<IEnumerable<IPage>> GetPages(bool update = false)
         {
-            var existsPages = await GetFromDatabase();
-
-            if (existsPages.LongCount() > 0)
-                return existsPages;
-
+            if (update)
+                await GetFromServer();
+            
+            return await GetFromDatabase();
+        }
+        
+        private async Task GetFromServer()
+        {
+            using (var conn = Connector.GetConnection())
+            {
+                var sql = "DELETE FROM page WHERE IdChapter = @chapter";
+                var param = new { chapter = this.Id };
+                var query = await conn.ExecuteAsync(sql, param);
+            }
+            
             //start crawling web
             uint counter = 1;
             var crawler = new DomCrawler();
@@ -245,15 +255,13 @@ namespace MangaCrawler.Crawler.Provider
                     };
 
                     page.Save();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     //
                 }
             }
-
-            return await GetFromDatabase();
         }
-
         private async Task<IEnumerable<IPage>> GetFromDatabase()
         {
             using (var conn = Connector.GetConnection())

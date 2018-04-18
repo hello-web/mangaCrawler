@@ -24,7 +24,7 @@ namespace MangaCrawler.Crawler.Database
         public DateTime? UpdateAt { get; set; }
         public DateTime? CreateAt { get; set; }
 
-        public virtual Task<IEnumerable<IPage>> GetPages()
+        public virtual Task<IEnumerable<IPage>> GetPages(bool update = false)
         {
             return Task.Run<IEnumerable<IPage>>(() => new List<IPage>());
         }

@@ -22,6 +22,6 @@ namespace MangaCrawler.Crawler.Data
 
         void Save();
         Image GetThumbnail();
-        Task<IEnumerable<IPage>> GetPages();
+        Task<IEnumerable<IPage>> GetPages(bool update = false);
     }
 }

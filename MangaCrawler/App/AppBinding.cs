@@ -56,7 +56,7 @@ namespace MangaCrawler.App
         /// <param name="id">ID Provider</param>
         /// <param name="page">Page Number</param>
         /// <param name="javascriptCallback"></param>
-        public void GetMangaList(int id, int page, IJavascriptCallback javascriptCallback)
+        public void GetMangaList(int id, int page, bool update, IJavascriptCallback javascriptCallback)
         {
             var provider = (from a in Providers
                             where a.Value.Id == id
@@ -70,7 +70,7 @@ namespace MangaCrawler.App
                     else
                     {
                         var skipCnt = (page - 1) * 20;
-                        var list = await provider.GetMangas();
+                        var list = await provider.GetMangas(update);
                         var sliceList = list.Skip(skipCnt).Take(20);
                         var response = ToJson(sliceList);
 
@@ -87,7 +87,7 @@ namespace MangaCrawler.App
         /// <param name="id_manga">ID Manga</param>
         /// <param name="page">Page Number</param>
         /// <param name="javascriptCallback"></param>
-        public void GetChapterList(int id, int id_manga, int page, IJavascriptCallback javascriptCallback)
+        public void GetChapterList(int id, int id_manga, int page, bool update, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
@@ -103,7 +103,7 @@ namespace MangaCrawler.App
                     {
                         var skipCnt = (page - 1) * 20;
                         var manga = await provider.GetManga(id_manga);
-                        var chapters = await manga.GetChapters();
+                        var chapters = await manga.GetChapters(update);
                         var sliceList = chapters.Skip(skipCnt).Take(20);
                         var response = ToJson(sliceList);
 
@@ -120,7 +120,7 @@ namespace MangaCrawler.App
         /// <param name="id_manga">ID Manga</param>
         /// <param name="id_chapter">ID Chapter</param>
         /// <param name="javascriptCallback"></param>
-        public void GetPageList(int id, int id_manga, int id_chapter, IJavascriptCallback javascriptCallback)
+        public void GetPageList(int id, int id_manga, int id_chapter, bool update, IJavascriptCallback javascriptCallback)
         {
             Task.Run(async () =>
             {
