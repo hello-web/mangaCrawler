@@ -31,7 +31,7 @@ namespace MangaCrawler.Crawler.Provider
             return await GetFromDatabase();
         }
 
-        public override async Task<IManga> GetManga(int Id, bool update = false)
+        public override async Task<IManga> GetManga(int Id)
         {
             using (var conn = Connector.GetConnection())
             {
@@ -168,7 +168,7 @@ namespace MangaCrawler.Crawler.Provider
             
             return await GetFromDatabase();
         }
-        public async override Task<IChapter> GetChapter(int id, bool update = false)
+        public async override Task<IChapter> GetChapter(int id)
         {
             using (var conn = Connector.GetConnection())
             {
