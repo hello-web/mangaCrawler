@@ -130,9 +130,12 @@
     <Compile Include="Crawler\Data\IUpdateThumb.cs" />
     <Compile Include="Crawler\DomCrawler.cs" />
     <Compile Include="Crawler\HttpDownloader.cs" />
-    <Compile Include="Crawler\Provider\MangaIndo.cs" />
     <Compile Include="Crawler\Job\JobDescription.cs" />
     <Compile Include="Crawler\Job\JobScheduler.cs" />
+    <Compile Include="Crawler\Provider\MangaIndo\MangaIndoChapter.cs" />
+    <Compile Include="Crawler\Provider\MangaIndo\MangaIndoManga.cs" />
+    <Compile Include="Crawler\Provider\MangaIndo\MangaIndoPage.cs" />
+    <Compile Include="Crawler\Provider\MangaIndo\MangaIndoProvider.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\NaturalComparer.cs" />

@@ -1,14 +1,11 @@
 ﻿using MangaCrawler.Crawler.Data;
-using MangaCrawler.Crawler.Provider;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CefSharp;
-using System.Reflection;
+using MangaCrawler.Crawler.Provider.MangaIndo;
 
 namespace MangaCrawler.App
 {

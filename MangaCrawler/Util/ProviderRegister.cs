@@ -1,5 +1,5 @@
 ﻿using MangaCrawler.Crawler.Data;
-using MangaCrawler.Crawler.Provider;
+using MangaCrawler.Crawler.Provider.MangaIndo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
