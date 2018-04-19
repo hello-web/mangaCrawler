@@ -103,6 +103,7 @@ export default {
                 return 'http://local.com/' + item.Thumb
         },
         detailManga(manga) {
+            this.$store.dispatch('manga/setManga', manga)
             this.$router.push({name: 'chapter', params: { id: manga.Id }})
         }
     }

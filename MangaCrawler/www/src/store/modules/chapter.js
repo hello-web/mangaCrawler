@@ -1,7 +1,6 @@
 export default {
     namespaced: true,
     state: {
-        activeManga: null,
         chapterList: [],
         page: 1,
         maxPage: 0,
@@ -13,28 +12,28 @@ export default {
         },
         pushChapter(state, chapter) {
             state.chapterList.push(chapter)
-        },
-        changeActiveManga(state, manga) {
-            state.activeManga = manga
         }
     },
     getters: {
-        //
+        chapterlist(state) {
+            return state.chapterList
+        }
     },
     actions: {
-        refreshChapter(context, manga) {
+        refreshChapter(context) {
             context.commit('clearChapter')
-            context.commit('changeActiveManga', manga)
 
+            let currentProvider = context.rootGetters['provider/providerId']
+            let currentManga = context.rootGetters['manga/mangaId']
             let currentPage = context.state.page
-            let currentManga = context.state.activeManga.id
-
+            
             // Get from database
-            CS.getChapterList(currentManga, currentPage, x => {
+            CS.getChapterList(currentProvider, currentManga, currentPage, true, x => {
                 if (x == '')
                     return
 
                 let data = JSON.parse(x)
+                data.forEach(x => context.commit('pushChapter', x))
             })
         }
     }

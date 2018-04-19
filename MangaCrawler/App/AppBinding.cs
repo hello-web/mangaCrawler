@@ -132,7 +132,7 @@ namespace MangaCrawler.App
 
                     var manga = await provider?.GetManga(id_manga);
                     var chapter = await manga?.GetChapter(id_chapter);
-                    var pages = await chapter?.GetPages();
+                    var pages = await chapter?.GetPages(update);
 
                     if (pages != null)
                     {

@@ -69,39 +69,42 @@ namespace MangaCrawler.Crawler.Provider
 
         private async Task GetFromWebsite()
         {
-            var crawler = new DomCrawler();
-            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-            await crawler.LoadHtmlAsync(stream);
-
-            var elements = crawler.Query("div.ltsc > div.mng");
-
-            foreach (var elm in elements)
+            try
             {
-                crawler.LoadHtml(elm.InnerHtml);
+                var crawler = new DomCrawler();
+                var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
+                await crawler.LoadHtmlAsync(stream);
 
-                var thumb = (IHtmlImageElement)crawler.QuerySingle("div.thumb img");
-                var link = (IHtmlAnchorElement)crawler.QuerySingle("div.title > a");
+                var elements = crawler.Query("div.ltsc > div.mng");
 
-                if (thumb != null && link != null)
+                foreach (var elm in elements)
                 {
-                    try
-                    {
-                        var manga = new MangaIndoManga()
-                        {
-                            IdProvider = this.Id,
-                            Url = link.Href,
-                            ThumbUrl = thumb.Source,
-                            Title = link.InnerHtml
-                        };
+                    crawler.LoadHtml(elm.InnerHtml);
 
-                        manga.Save();
-                    }
-                    catch (Exception ex)
+                    var thumb = (IHtmlImageElement)crawler.QuerySingle("div.thumb img");
+                    var link = (IHtmlAnchorElement)crawler.QuerySingle("div.title > a");
+
+                    if (thumb != null && link != null)
                     {
-                        throw ex;
+                        try
+                        {
+                            var manga = new MangaIndoManga()
+                            {
+                                IdProvider = this.Id,
+                                Url = link.Href,
+                                ThumbUrl = thumb.Source,
+                                Title = link.InnerHtml
+                            };
+
+                            manga.Save();
+                        }
+                        catch (Exception ex)
+                        {
+                            throw ex;
+                        }
                     }
                 }
-            }
+            } catch { }
         }
     }
 
@@ -191,7 +194,7 @@ namespace MangaCrawler.Crawler.Provider
             {
                 try
                 {
-                    var sql = "SELECT * FROM chapter WHERE IdManga = @manga";
+                    var sql = "SELECT * FROM chapter WHERE IdManga = @manga ORDER BY Num";
                     var param = new { manga = this.Id };
                     var query = await conn.QueryAsync<MangaIndoChapter>(sql, param);
 
