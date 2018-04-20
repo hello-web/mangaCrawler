@@ -33,7 +33,7 @@ namespace MangaCrawler.App
                 IsCSPBypassing = true,
                 IsSecure = false,
                 SchemeName = "http",
-                SchemeHandlerFactory = new AppScheme(Application.StartupPath, "http://local.com")
+                SchemeHandlerFactory = new AppScheme(Program.BasePath, "http://local.com")
             };
 
             settings = new CefSettings()
@@ -74,7 +74,7 @@ namespace MangaCrawler.App
 
         private void Form_Load(object sender, EventArgs e)
         {
-            var cachePath = Path.Combine(Application.StartupPath, "cache\\");
+            var cachePath = Program.CachePath;
 
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);

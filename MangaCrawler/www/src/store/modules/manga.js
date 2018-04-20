@@ -22,7 +22,9 @@ export default {
             return state.mangaList
         },
         mangacurrent(state) {
-            return state.mangaCurrent
+            if (state.mangaCurrent != null)
+                return state.mangaCurrent
+            return {}
         },
         mangaId(state) {
             if (state.mangaCurrent != null)

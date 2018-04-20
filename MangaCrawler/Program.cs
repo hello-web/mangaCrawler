@@ -16,8 +16,17 @@ namespace MangaCrawler
 {
     static class Program
     {
-        public static string CachePath { get => Path.Combine(Application.StartupPath, "Cache"); }
-        public static string LitePath { get => Path.Combine(CachePath, "cache.db"); }
+        public static string BasePath {
+            get
+            {
+#if DEBUG
+                return Path.GetFullPath(Path.Combine(Application.StartupPath, @"..\..\.."));
+#else
+                return Application.StartupPath;
+#endif
+            }
+        }
+        public static string CachePath { get => Path.Combine(BasePath, "Cache"); }
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -33,7 +42,7 @@ namespace MangaCrawler
                 Application.Exit();
                 return;
             }
-
+            
             var app = new AppMain();
 
             app.Initialize();

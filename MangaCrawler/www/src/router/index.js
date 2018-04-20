@@ -13,7 +13,7 @@ export default new Router({
             component: HomePage
         },
         {
-            path: '/chapter/:id',
+            path: '/chapter/:manga',
             name: 'chapter',
             component: ChapterPage
         }

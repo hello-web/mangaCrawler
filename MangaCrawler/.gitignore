@@ -4,6 +4,7 @@ www/dist/build.js
 www/dist/build.css
 yarn-error.log
 npm-debug.log
+Cache
 
 # Editor directories and files
 .vscode

@@ -84,7 +84,11 @@ export default {
         }
     },
     methods: {
-        refreshChapter(id) {
+        refreshChapter(manga) {
+            if (typeof manga != 'object')
+                this.$router.push({name: 'home'})
+            
+            this.$store.dispatch('manga/setManga', manga)
             this.$store.dispatch('chapter/refreshChapter')
         },
         back() {
@@ -92,7 +96,7 @@ export default {
         }
     },
     mounted() {
-        this.refreshChapter(this.$route.params.id)
+        this.refreshChapter(this.$route.params.manga)
     }
 }
 </script>
