@@ -107,10 +107,14 @@ export default {
             this.$router.push({name: 'read', params: { chapter }})
         },
         refreshChapter(manga) {
-            if (typeof manga != 'object')
-                this.$router.push({name: 'home'})
+            if (typeof manga != 'object') {
+                if (this.manga == null)
+                    this.$router.push({name: 'home'})
+                else
+                    return;
+            }
             
-            this.$store.dispatch('manga/setManga', manga)
+            this.$store.commit('manga/setCurrentManga', manga)
             this.$store.dispatch('chapter/refreshChapter')
         },
         back() {

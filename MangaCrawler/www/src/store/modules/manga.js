@@ -33,9 +33,6 @@ export default {
         }
     },
     actions: {
-        setManga(context, manga) {
-            context.commit('setCurrentManga', manga);
-        },
         refreshManga(context) {
             context.commit('clearManga')
 
