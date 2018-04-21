@@ -15,65 +15,9 @@ namespace MangaCrawler.Crawler.Provider.MangaIndo
     {
         public async override Task<IEnumerable<IChapter>> GetChapters(bool update = false)
         {
-            var existChapter = await GetFromDatabase();
-
-            if (!update)
-                return existChapter;
-
-            var crawler = new DomCrawler();
-            var lstResult = new List<IChapter>();
-            var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
-            uint counter = 1;
-            await crawler.LoadHtmlAsync(stream);
-
-            try
-            {
-                counter = existChapter.Max(x => x.Num) + 1;
-            }
-            catch { }
-
-            var elements = crawler.Query("div.cl > ul > li");
-
-            foreach (var elm in elements)
-            {
-                crawler.LoadHtml(elm.InnerHtml);
-
-                var link = (IHtmlAnchorElement)crawler.QuerySingle("span.leftoff > a");
-
-                if (link != null)
-                {
-                    var chapter = new MangaIndoChapter()
-                    {
-                        IdManga = this.Id,
-                        Url = link.Href,
-                        Title = link.InnerHtml,
-                        Num = 0,
-                    };
-                    var ext = (from a in existChapter
-                               where a.Title == chapter.Title
-                               select a).FirstOrDefault();
-
-                    if (ext == null)
-                        lstResult.Add(chapter);
-                }
-            }
-
-            lstResult = lstResult.OrderBy(x => x.Title, new NaturalComparer()).ToList();
-
-            foreach (var elm in lstResult)
-            {
-                try
-                {
-                    elm.Num = counter;
-                    elm.Save();
-                    counter++;
-                }
-                catch (Exception ex)
-                {
-                    //
-                }
-            }
-
+            if (update)
+                await GetFromServer();
+            
             return await GetFromDatabase();
         }
         public async override Task<IChapter> GetChapter(int id)
@@ -112,6 +56,67 @@ namespace MangaCrawler.Crawler.Provider.MangaIndo
                 }
             }
         }
+        private async Task GetFromServer()
+        {
+            try
+            {
+                var existChapter = await GetFromDatabase();
+                var crawler = new DomCrawler();
+                var lstResult = new List<IChapter>();
+                var stream = await HttpDownloader.GetAsync(HttpMethod.Get, Url);
+                uint counter = 1;
+                await crawler.LoadHtmlAsync(stream);
+
+                try
+                {
+                    counter = existChapter.Max(x => x.Num) + 1;
+                }
+                catch { }
+
+                var elements = crawler.Query("div.cl > ul > li");
+
+                foreach (var elm in elements)
+                {
+                    crawler.LoadHtml(elm.InnerHtml);
+
+                    var link = (IHtmlAnchorElement)crawler.QuerySingle("span.leftoff > a");
+
+                    if (link != null)
+                    {
+                        var chapter = new MangaIndoChapter()
+                        {
+                            IdManga = this.Id,
+                            Url = link.Href,
+                            Title = link.InnerHtml,
+                            Num = 0,
+                        };
+                        var ext = (from a in existChapter
+                                   where a.Title == chapter.Title
+                                   select a).FirstOrDefault();
+
+                        if (ext == null)
+                            lstResult.Add(chapter);
+                    }
+                }
+
+                lstResult = lstResult.OrderBy(x => x.Title, new NaturalComparer()).ToList();
+
+                foreach (var elm in lstResult)
+                {
+                    try
+                    {
+                        elm.Num = counter;
+                        elm.Save();
+                        counter++;
+                    }
+                    catch (Exception ex)
+                    {
+                        //
+                    }
+                }
+            } catch { }
+        }
+
 
         public async override Task<IDictionary<string, object>> GetMetas()
         {

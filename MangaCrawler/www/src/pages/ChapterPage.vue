@@ -39,6 +39,24 @@
                                         <div class="img-container img-manga"></div>
                                         <div class="mt-overlay">
                                             <h2>{{ item.Title }}</h2>
+                                            <div class="mt-info">
+                                                <div class="mt-card-content">
+                                                    <div class="mt-card-social">
+                                                        <ul>
+                                                            <li>
+                                                                <a @click="readChapter(item)">
+                                                                    <i class="icon-book-open"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a>
+                                                                    <i class="icon-drawer"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +74,8 @@
 }
 
 .mt-card-avatar.none .mt-overlay,
-.mt-card-avatar.none h2 {
+.mt-card-avatar.none h2,
+.mt-card-avatar.none .mt-info {
     opacity: 1;
 }
 
@@ -84,6 +103,9 @@ export default {
         }
     },
     methods: {
+        readChapter(chapter) {
+            this.$router.push({name: 'read', params: { chapter }})
+        },
         refreshChapter(manga) {
             if (typeof manga != 'object')
                 this.$router.push({name: 'home'})

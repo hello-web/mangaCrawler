@@ -1,6 +1,7 @@
 export default {
     namespaced: true,
     state: {
+        chapterCurrent: null,
         chapterList: [],
         page: 1,
         maxPage: 0,
@@ -12,11 +13,22 @@ export default {
         },
         pushChapter(state, chapter) {
             state.chapterList.push(chapter)
+        },
+        setCurrentChapter(state, chapter) {
+            state.chapterCurrent = chapter
         }
     },
     getters: {
         chapterlist(state) {
             return state.chapterList
+        },
+        chaptercurrent(state) {
+            return state.chapterCurrent
+        },
+        chapterId(state) {
+            if (state.chapterCurrent != null)
+                return state.chapterCurrent.Id
+            return null
         }
     },
     actions: {
