@@ -15,7 +15,7 @@
                         <img :src="thumbUrl">
                     </a>
                     <p>Title : {{ manga.Title }}</p>
-                    <p>Chapter Total : {{ chapterList.length }}</p>
+                    <p>Chapter Total : {{ chapterTotal }}</p>
                     <button class="btn red" @click="back"><i class="icon-action-undo"></i> BACK</button>
                 </div>
             </div>
@@ -63,6 +63,25 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <ul class="pagination">
+                                <li>
+                                    <a @click="prevPage">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
+                                </li>
+                                <li v-for="i in maxPage" :key="i" :class="{'active': i == currentPage }">
+                                    <a @click="gotoPage(i)">{{ i }}</a>
+                                </li>
+                                <li>
+                                    <a @click="nextPage">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,6 +111,9 @@ export default {
         chapterList() {
             return this.$store.getters['chapter/chapterlist']
         },
+        chapterTotal() {
+            return this.$store.state.chapter.chapterTotal
+        },
         manga() {
             return this.$store.getters['manga/mangacurrent']
         },
@@ -100,6 +122,12 @@ export default {
                 return this.manga.ThumbUrl
             else
                 return 'http://local.com/' + this.manga.Thumb
+        },
+        maxPage() {
+            return this.$store.state.chapter.maxPage
+        },
+        currentPage() {
+            return this.$store.state.chapter.page
         }
     },
     methods: {
@@ -115,10 +143,20 @@ export default {
             }
             
             this.$store.commit('manga/setCurrentManga', manga)
+            this.$store.commit('chapter/resetPage')
             this.$store.dispatch('chapter/refreshChapter')
         },
         back() {
             this.$router.go(-1)
+        },
+        prevPage() {
+            this.$store.dispatch('chapter/prevPage')
+        },
+        nextPage() {
+            this.$store.dispatch('chapter/nextPage')
+        },
+        gotoPage(page) {
+            this.$store.dispatch('chapter/goPage', page)
         }
     },
     mounted() {

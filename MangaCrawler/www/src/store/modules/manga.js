@@ -15,6 +15,9 @@ export default {
         },
         setCurrentManga(state, manga) {
             state.mangaCurrent = manga
+        },
+        setMaxPage(state, page) {
+            state.maxPage = page
         }
     },
     getters: {
@@ -44,8 +47,28 @@ export default {
                     return
                 
                 let data = JSON.parse(x)
-                data.forEach(x => context.commit('pushManga', x))
+                let items = data.data
+                
+                items.forEach(x => context.commit('pushManga', x))
+                context.commit('setMaxPage', data.maxPage)
             })
+        },
+        nextPage(context) {
+            let page = context.state.page + 1
+            context.dispatch('goPage', page)
+        },
+        prevPage(context) {
+            let page = context.state.page - 1
+            context.dispatch('goPage', page)
+        },
+        goPage(context, page) {
+            let maxPage = context.state.maxPage
+            let curPage = context.state.page
+            if (page < 1 || page > maxPage || page == curPage)
+                return              //ignore action
+            
+            context.state.page = page
+            context.dispatch('refreshManga')
         }
     }
 }

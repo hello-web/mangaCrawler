@@ -68,8 +68,12 @@ namespace MangaCrawler.App
                     {
                         var skipCnt = (page - 1) * 20;
                         var list = await provider.GetMangas(update);
+                        var maxPage = Math.Floor(Convert.ToDecimal(list.Count() / 20));
                         var sliceList = list.Skip(skipCnt).Take(20);
-                        var response = ToJson(sliceList);
+                        var response = ToJson(new {
+                            maxPage,
+                            data = sliceList,
+                        });
 
                         await javascriptCallback.ExecuteAsync(response);
                     }
@@ -101,8 +105,15 @@ namespace MangaCrawler.App
                         var skipCnt = (page - 1) * 20;
                         var manga = await provider.GetManga(id_manga);
                         var chapters = await manga.GetChapters(update);
+                        var total = Convert.ToDecimal(chapters.Count());
+                        var maxPage = Math.Floor(total / 20);
+                        
                         var sliceList = chapters.Skip(skipCnt).Take(20);
-                        var response = ToJson(sliceList);
+                        var response = ToJson(new {
+                            total,
+                            maxPage,
+                            data = sliceList
+                        });
 
                         await javascriptCallback.ExecuteAsync(response);
                     }

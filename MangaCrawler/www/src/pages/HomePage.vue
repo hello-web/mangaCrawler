@@ -59,21 +59,15 @@
                         <div class="col-md-12 text-center">
                             <ul class="pagination pagination-block">
                                 <li>
-                                    <a href="javascript:;">
+                                    <a @click="prevPage">
                                         <i class="fa fa-angle-left"></i>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="javascript:;"> 1 </a>
+                                <li v-for="i in maxPage" :key="i" :class="{'active': i == currentPage }">
+                                    <a @click="gotoPage(i)">{{ i }}</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;"> 2 </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;"> 3 </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
+                                    <a @click="nextPage">
                                         <i class="fa fa-angle-right"></i>
                                     </a>
                                 </li>
@@ -93,6 +87,12 @@ export default {
     computed: {
         mangaList() {
             return this.$store.getters['manga/mangalist']
+        },
+        maxPage() {
+            return this.$store.state.manga.maxPage
+        },
+        currentPage() {
+            return this.$store.state.manga.page
         }
     },
     methods: {
@@ -104,6 +104,15 @@ export default {
         },
         detailManga(manga) {
             this.$router.push({name: 'chapter', params: { manga }})
+        },
+        nextPage() {
+            this.$store.dispatch('manga/nextPage')
+        },
+        prevPage() {
+            this.$store.dispatch('manga/prevPage')
+        },
+        gotoPage(page) {
+            this.$store.dispatch('manga/goPage', page)
         }
     }
 }
