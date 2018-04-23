@@ -39,47 +39,60 @@
                     </ul>
                 </li>
                 <li class="heading">
-                    <h3 class="uppercase">Features</h3>
+                    <h3 class="uppercase">Main Menu</h3>
                 </li>
                 <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-diamond"></i>
-                        <span class="title">UI Features</span>
+                        <span class="title">Bookmark</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item  ">
                             <a href="ui_metronic_grid.html" class="nav-link ">
-                                <span class="title">Metronic Grid System</span>
+                                <span class="title">Favorite</span>
                             </a>
                         </li>
                         <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <span class="title">Page Progress Bar</span>
-                                <span class="arrow"></span>
+                            <a href="ui_metronic_grid.html" class="nav-link ">
+                                <span class="title">Plan To Read</span>
                             </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item ">
-                                    <a href="ui_page_progress_style_1.html" class="nav-link "> Flash </a>
-                                </li>
-                                <li class="nav-item ">
-                                    <a href="ui_page_progress_style_2.html" class="nav-link "> Big Counter </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="ui_metronic_grid.html" class="nav-link ">
+                                <span class="title">Still Read</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="ui_metronic_grid.html" class="nav-link ">
+                                <span class="title">Finish Read</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
                 <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-puzzle"></i>
-                        <span class="title">Components</span>
+                        <span class="title">Download</span>
                         <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item  ">
                             <a href="components_color_pickers.html" class="nav-link ">
-                                <span class="title">Color Pickers</span>
+                                <span class="title">Failed Download</span>
                                 <span class="badge badge-danger">2</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">Pending Download</span>
+                                <span class="badge badge-warning">2</span>
+                            </a>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">Complete Download</span>
+                                <span class="badge badge-success">3</span>
                             </a>
                         </li>
                     </ul>
@@ -116,7 +129,7 @@
                     </ul>
                 </li>
                 <li class="heading">
-                    <h3 class="uppercase">Pages</h3>
+                    <h3 class="uppercase">User Section</h3>
                 </li>
                 <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
@@ -126,65 +139,33 @@
                     </a>
                     <ul class="sub-menu">
                         <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-notebook"></i>
-                                <span class="title">Login</span>
-                                <span class="arrow"></span>
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">Profile</span>
                             </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item ">
-                                    <a href="page_user_login_1.html" class="nav-link " target="_blank"> Login Page 1 </a>
-                                </li>
-                            </ul>
+                        </li>
+                        <li class="nav-item  ">
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">Setting</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item  ">
                     <a href="javascript:;" class="nav-link nav-toggle">
                         <i class="icon-folder"></i>
-                        <span class="title">Multi Level Menu</span>
-                        <span class="arrow "></span>
+                        <span class="title">App Settings</span>
+                        <span class="arrow"></span>
                     </a>
                     <ul class="sub-menu">
-                        <li class="nav-item">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-settings"></i> Item 1
-                                <span class="arrow"></span>
+                        <li class="nav-item  ">
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">App Setting</span>
                             </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item">
-                                    <a href="javascript:;" target="_blank" class="nav-link">
-                                        <i class="icon-user"></i> Arrow Toggle
-                                        <span class="arrow nav-toggle"></span>
-                                    </a>
-                                    <ul class="sub-menu">
-                                        <li class="nav-item">
-                                            <a href="#" class="nav-link">
-                                                <i class="icon-power"></i> Sample Link 1</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="icon-camera"></i> Sample Link 1</a>
-                                </li>
-                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="javascript:;" target="_blank" class="nav-link">
-                                <i class="icon-globe"></i> Arrow Toggle
-                                <span class="arrow nav-toggle"></span>
+                        <li class="nav-item  ">
+                            <a href="components_color_pickers.html" class="nav-link ">
+                                <span class="title">Provider Setting</span>
                             </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="icon-tag"></i> Sample Link 1</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="icon-bar-chart"></i> Item 3 </a>
                         </li>
                     </ul>
                 </li>
