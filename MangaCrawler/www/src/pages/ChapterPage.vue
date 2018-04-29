@@ -17,6 +17,9 @@
                     <p>Title : {{ manga.Title }}</p>
                     <p>Chapter Total : {{ chapterTotal }}</p>
                     <button class="btn red" @click="back"><i class="icon-action-undo"></i> BACK</button>
+                    <button class="btn red" @click="back"><i class="icon-refresh"></i> UPDATE</button>
+                    <button class="btn red" @click="back"><i class="icon-drawer"></i> DOWNLOAD</button>
+                    <button class="btn red" @click="back"><i class="icon-badge"></i> BOOKMARK</button>
                 </div>
             </div>
         </div>
@@ -134,7 +137,7 @@ export default {
         readChapter(chapter) {
             this.$router.push({name: 'read', params: { chapter }})
         },
-        refreshChapter(manga) {
+        refreshChapter(manga, is_update) {
             if (typeof manga != 'object') {
                 if (this.manga == null)
                     this.$router.push({name: 'home'})
@@ -143,8 +146,8 @@ export default {
             }
             
             this.$store.commit('manga/setCurrentManga', manga)
-            this.$store.commit('chapter/resetPage')
-            this.$store.dispatch('chapter/refreshChapter')
+            this.$store.dispatch('chapter/resetPage')
+            this.$store.dispatch('chapter/refreshChapter', is_update)
         },
         back() {
             this.$router.go(-1)
@@ -160,7 +163,7 @@ export default {
         }
     },
     mounted() {
-        this.refreshChapter(this.$route.params.manga)
+        this.refreshChapter(this.$route.params.manga, false)
     }
 }
 </script>

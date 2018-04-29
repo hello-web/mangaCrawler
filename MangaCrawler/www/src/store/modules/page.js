@@ -21,7 +21,7 @@ export default {
         }
     },
     actions: {
-        refreshPage(context) {
+        refreshPage(context, is_update) {
             context.commit('clearPage')
 
             let currentProvider = context.rootGetters['provider/providerId']
@@ -29,7 +29,7 @@ export default {
             let currentChapter = context.rootGetters['chapter/chapterId']
             
             // Get from database
-            CS.getPageList(currentProvider, currentManga, currentChapter, true, x => {
+            CS.getPageList(currentProvider, currentManga, currentChapter, is_update, x => {
                 if (x == '')
                     return
                 

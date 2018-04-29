@@ -13,17 +13,17 @@
                 <div class="portlet-body row">
                     <div class="col-md-12">
                         <button class="btn red" @click="back"><i class="icon-action-undo"></i> BACK</button>
-                        <button class="btn red" @click="prevPage"><i class="icon-action-undo"></i> Prev</button>
-                        <button class="btn red" @click="nextPage"><i class="icon-action-undo"></i> Next</button>
+                        <button class="btn red" @click="prevPage"><i class="fa fa-chevron-left"></i> Prev</button>
+                        <button class="btn red" @click="nextPage"><i class="fa fa-chevron-right"></i> Next</button>
                         <span>{{ currentIndex+1 }}/{{ pagecount }}</span>
                     </div>
                     <div class="col-md-12">
-                        <img :src="pagesrc">
+                        <img :src="pagesrc" class="img img-responsive">
                     </div>
                     <div class="col-md-12">
                         <button class="btn red" @click="back"><i class="icon-action-undo"></i> BACK</button>
-                        <button class="btn red" @click="prevPage"><i class="icon-action-undo"></i> Prev</button>
-                        <button class="btn red" @click="nextPage"><i class="icon-action-undo"></i> Next</button>
+                        <button class="btn red" @click="prevPage"><i class="fa fa-chevron-left"></i> Prev</button>
+                        <button class="btn red" @click="nextPage"><i class="fa fa-chevron-right"></i> Next</button>
                     </div>
                 </div>
             </div>
@@ -64,16 +64,16 @@ export default {
             if (this.currentIndex > 0)
                 this.currentIndex--;
         },
-        refreshPage(chapter) {
+        refreshPage(chapter, is_update) {
             if (typeof chapter != 'object')
                 this.$router.push({name: 'home'})
             
             this.$store.commit('chapter/setCurrentChapter', chapter)
-            this.$store.dispatch('page/refreshPage')
+            this.$store.dispatch('page/refreshPage', is_update)
         }
     },
     mounted() {
-        this.refreshPage(this.$route.params.chapter)
+        this.refreshPage(this.$route.params.chapter, false)
     }
 }
 </script>

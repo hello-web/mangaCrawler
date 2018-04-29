@@ -5,6 +5,7 @@ using Dapper;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MangaCrawler.Crawler.Provider.MangaIndo
@@ -13,10 +14,17 @@ namespace MangaCrawler.Crawler.Provider.MangaIndo
     {
         public override async Task<IEnumerable<IPage>> GetPages(bool update = false)
         {
-            if (update)
+            var serv = await GetFromDatabase();
+
+            // Check database or need to update
+            if (!serv.Any() || update)
+            {
                 await GetFromServer();
 
-            return await GetFromDatabase();
+                return await GetFromDatabase();
+            }
+
+            return serv;
         }
 
         private async Task GetFromServer()

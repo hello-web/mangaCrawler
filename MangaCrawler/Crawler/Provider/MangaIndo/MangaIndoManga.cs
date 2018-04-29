@@ -15,10 +15,17 @@ namespace MangaCrawler.Crawler.Provider.MangaIndo
     {
         public async override Task<IEnumerable<IChapter>> GetChapters(bool update = false)
         {
-            if (update)
+            var serv = await GetFromDatabase();
+
+            // Check if there any element or should update
+            if (!serv.Any() || update)
+            {
                 await GetFromServer();
-            
-            return await GetFromDatabase();
+
+                return await GetFromDatabase();
+            }
+
+            return serv;
         }
         public async override Task<IChapter> GetChapter(int id)
         {

@@ -41,15 +41,16 @@ export default {
         }
     },
     actions: {
-        refreshChapter(context) {
+        refreshChapter(context, is_update) {
             context.commit('clearChapter')
+            context.commit('setChapterTotal', 0)
 
             let currentProvider = context.rootGetters['provider/providerId']
             let currentManga = context.rootGetters['manga/mangaId']
             let currentPage = context.state.page
             
             // Get from database
-            CS.getChapterList(currentProvider, currentManga, currentPage, true, x => {
+            CS.getChapterList(currentProvider, currentManga, currentPage, is_update, x => {
                 if (x == '')
                     return
 
@@ -78,7 +79,7 @@ export default {
                 return              //ignore action
             
             context.commit('setPage', page)
-            context.dispatch('refreshChapter')
+            context.dispatch('refreshChapter', false)
         }
     }
 }

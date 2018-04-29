@@ -154,5 +154,29 @@ namespace MangaCrawler.App
                 }
             });
         }
+
+        public void GetDownloadStatus(int id_download, IJavascriptCallback javascriptCallback)
+        {
+            using (javascriptCallback)
+            {
+                javascriptCallback.ExecuteAsync();
+            }
+        }
+
+        public void DownloadChapter(int chapter_id, IJavascriptCallback javascriptCallback)
+        {
+            using (javascriptCallback)
+            {
+                javascriptCallback.ExecuteAsync();
+            }
+        }
+
+        public void DownloadManga(int manga_id, IJavascriptCallback javascriptCallback)
+        {
+            using (javascriptCallback)
+            {
+                javascriptCallback.ExecuteAsync();
+            }
+        }
     }
 }
