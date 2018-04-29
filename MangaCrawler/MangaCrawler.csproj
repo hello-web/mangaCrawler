@@ -118,8 +118,10 @@
     <Compile Include="App\AppBinding.cs" />
     <Compile Include="App\AppMain.cs" />
     <Compile Include="App\AppScheme.cs" />
+    <Compile Include="Crawler\Database\Bookmark.cs" />
     <Compile Include="Crawler\Database\Chapter.cs" />
     <Compile Include="Crawler\Database\Connector.cs" />
+    <Compile Include="Crawler\Database\Download.cs" />
     <Compile Include="Crawler\Database\Manga.cs" />
     <Compile Include="Crawler\Database\Page.cs" />
     <Compile Include="Crawler\Database\Provider.cs" />
