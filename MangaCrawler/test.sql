@@ -16,12 +16,19 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `crawler`
+-- Table structure for table `bookmark`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `crawler` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
-USE `crawler`;
+DROP TABLE IF EXISTS `bookmark`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bookmark` (
+  `Id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `IdManga` bigint(20) unsigned NOT NULL,
+  `Flag` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Default Bookmark Flag',
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `chapter`
@@ -42,6 +49,21 @@ CREATE TABLE `chapter` (
   `Updateat` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `chapter_un` (`IdManga`,`Title`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `download`
+--
+
+DROP TABLE IF EXISTS `download`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `download` (
+  `Id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `IdChapter` bigint(20) unsigned NOT NULL,
+  `IsDownload` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,4 +133,4 @@ CREATE TABLE `provider` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-10 23:21:03
+-- Dump completed on 2018-04-29 14:45:28
